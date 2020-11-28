@@ -13,14 +13,19 @@ test:
 .PHONY: build
 build:
 	make tsc
-	make typedoc
+	make doc
 
 .PHONY: tsc
 tsc:
 	./node_modules/.bin/tsc --resolveJsonModule -p ./tsconfig.json
 
-.PHONY: typedoc
-typedoc:
-	#./node_modules/.bin/typedoc --theme minimal  --out ./docs --ignoreCompilerErrors --excludeNotExported --includeDeclarations --exclude "**/node_modules/**/*" --inputFiles ./src/
+.PHONY: doc
+doc:
+	./node_modules/.bin/docco -o . -x md -l plain  ./src/index.ts
+	rm -rf ./Readme.md
+	mv ./src/index.md ./Readme.md
+	./node_modules/.bin/docco -o .  -l parallel  ./src/index.ts
+	mv ./src/index.html ./index.html
+	./node_modules/.bin/typedoc --theme ../../tools/typedoc/default  --out ./docs/types   --includeDeclarations --exclude "**/node_modules/**/*" --inputFiles ./src
 
 
