@@ -1,3 +1,15 @@
+/* eslint  no-var: "error" */
+
+// @gratico/qbase
+// =====
+// TODO: clean up Watch interface
+// Simple active record like ORM for browser
+
+// Install and use
+// ---------------
+// To use run `npm install -g @gratico/qbase`
+//
+
 import {
   DB,
   createStore as createDb,
