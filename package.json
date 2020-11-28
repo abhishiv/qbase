@@ -18,7 +18,7 @@
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo 42",
+    "test": "./node_modules/.bin/jest --runInBand",
     "pub": "npm publish --access=public",
     "build": "cp ../../tools/mono/Makefile ./Makefile && make build"
   },
@@ -30,7 +30,9 @@
   },
   "peerDependencies": {},
   "devDependencies": {
+    "@types/jest": "^26.0.0",
     "docco-next": "^0.9.3",
-    "typedoc": "^0.19.2"
+    "typedoc": "^0.19.2",
+    "jest": "^26.0.1"
   }
 }
