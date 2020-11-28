@@ -1,0 +1,33 @@
+{
+  "name": "@gratico/qbase",
+  "version": "0.8.1",
+  "author": "Abhishiv Saxena<abhishiv@gmail.com>",
+  "description": "Relational data store with support for MTM/HM/BT/H1 relationships and query watching",
+  "license": "UNLICENSED",
+  "keywords": [
+    "gratico-engineering"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/gratico/qbase.git"
+  },
+  "url": "https://www.grati.co/@gratico/qbase",
+  "accessConfig": {
+    "public": true
+  },
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "test": "echo 42",
+    "pub": "npm publish --access=public",
+    "build": "cp ../../tools/mono/Makefile ./Makefile && make build"
+  },
+  "dependencies": {
+    "shortid": "^2.2.15",
+    "sift": "^13.1.10",
+    "@gratico/atom": "*",
+    "@gratico/checksum": "*"
+  },
+  "peerDependencies": {},
+  "devDependencies": {}
+}

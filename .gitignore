@@ -1,0 +1,51 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+.log
+*.save
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+bundles/
+webpack-bundle.json
+# build
+build
+dist
+**/public/bundles/*.js
+**/public/bundles/*.js.map
+**/public/bundles/*.json
+packages/server/src/index.js
+packages/server/src/index.js.map
+.parcel-cache
+.cache
+.swagger.v1.json
+serverTypes
+docs/
+wallaby.config.js
+newrelic_agent.log
+/packages/*/**/@types
