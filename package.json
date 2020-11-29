@@ -32,6 +32,7 @@
   },
   "peerDependencies": {},
   "devDependencies": {
+    "@gratico/docs-site": "^0.1.2",
     "@types/jest": "^26.0.0",
     "@types/shortid": "^0.0.29",
     "docco-next": "^0.9.3",
