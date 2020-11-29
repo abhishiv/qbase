@@ -27,6 +27,7 @@ doc-file:
 
 .PHONY: doc
 doc:
+	ls -l
 	rm -rf docs/
 	mkdir p docs
 	cp -r src/src/ docs/
