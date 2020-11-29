@@ -1,37 +1,88 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/gratico/qbase/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+# @gratico/qbase
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+@gratico/qbase
+=====
 
-### Markdown
+Simple light and super-performant active record like ORM for browser with MongoDB styled queries and watchable queries.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Install and use
+---------------
 
-```markdown
-Syntax highlighted code block
+To use run `npm install -g @gratico/qbase`
 
-# Header 1
-## Header 2
-### Header 3
+    import {createStore, getSelect, getInsert, observe} from "@gratico/qbase"
+    const store = createStore()
 
-- Bulleted
-- List
 
-1. Numbered
-2. List
+Schema Definition
+---------------------------
 
-**Bold** and _Italic_ and `Code` text
+List of table describing their column and realtions
 
-[Link](url) and ![Image](src)
+    export const schema: ISchemaDefinition = {
+      name: "Kernel",
+      tables: [
+        {
+          name: "Masters",
+          primaryKey: ["id"],
+          relations: [
+            [
+              R.MTM, // relation type
+              "viewports", // relation name
+              { // relation options
+                tableName: "Viewports",
+                remoteKey: "viewportId",
+                localKey: "masterId",
+                through: "MasterViewportJunction",
+              },
+            ],
+          ],
+          columns: [
+            { name: "id", type: "STRING" },
+            { name: "createdAt", type: "DATE_TIME", nullable: true },
+          ],
+        } as ITableDefinition,
+      ],
+    };
+
+Querying
+---------------------------
+
+List of table describing their column and realtions
+
+    const selectQuery = getSelect(db, [
+      Q.SELECT,
+      "Viewports",
+      { columns: ["id", "name"], includes: ["masters"] },
+    ]);
+    const preInsertSelectResults = selectQuery();
+    const insertMQuery = getInsert(db, [
+      Q.INSERT,
+      "Masters",
+      [{ id: "master1", "name": "Master Node" }],
+    ]);
+    const insertVQuery = getInsert(db, [
+      Q.INSERT,
+      "Viewports",
+      [{ id: "viewport1", "name": "viepwortNode" }],
+    ]);
+    const insertMVJunctionQuery = getInsert(db, [
+      Q.INSERT,
+      "MasterViewportJunction",
+      [{ id: "master1.viewport1", masterId: "", viewportId: "viewport1" }],
+    ]);
+
+
+
+```
+export * from "./queries";
+export * from "./relational";
+export * from "./schema";
+export * from "./types";
+export * from "./utils";
+export * from "./watch";
+
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/gratico/qbase/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.

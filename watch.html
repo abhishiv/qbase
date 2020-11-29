@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>watch.ts</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="https://cdn.jsdelivr.net/npm/docco-next@0.9.3/layouts/parallel/docco.css" />
+  <style>
+    h1,h2,h3,h4,h5 {
+      text-transform: none;
+    }
+    div.annotation pre {
+        margin: 15px 0 15px;
+        padding-left: 15px;
+        background: #f5f5fe;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>watch.ts</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-1">&#x00a7;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> { getShradCursorPath } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./relational&quot;</span>;
+
+<span class="hljs-keyword">import</span> { defWatchableCursor, ICommit } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/atom&quot;</span>;
+<span class="hljs-keyword">import</span> { checksum } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/checksum&quot;</span>;
+
+<span class="hljs-keyword">import</span> shortid <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;shortid&quot;</span>;
+
+<span class="hljs-keyword">import</span> { IQBase, ITableDefinition, ISelectQuery, R } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./types&quot;</span>;
+<span class="hljs-keyword">import</span> { getTableDefinition, getRelationDefintion } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./utils&quot;</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">observe</span>(<span class="hljs-params">store: IQBase, query: ISelectQuery, handler: <span class="hljs-built_in">Function</span></span>) </span>{
+  <span class="hljs-keyword">const</span> id = shortid();
+  <span class="hljs-keyword">const</span> queryHash = checksum(query);
+  <span class="hljs-keyword">const</span> wid = id + <span class="hljs-string">&quot;/&quot;</span> + queryHash;
+  <span class="hljs-keyword">const</span> tableDef = getTableDefinition(store, query[<span class="hljs-number">1</span>]);
+  <span class="hljs-keyword">const</span> interestingTables = getRelatedTables(store, query, tableDef);
+  <span class="hljs-keyword">const</span> shradCusor = defWatchableCursor(store.db, getShradCursorPath(store.db));
+  shradCusor.addWatch(wid, <span class="hljs-function">(<span class="hljs-params">id, commit</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> dirtyTables = getDirtyTables(store, commit || []);
+    <span class="hljs-keyword">const</span> isDirty = dirtyTables.some(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> interestingTables.has(el));
+    <span class="hljs-built_in">console</span>.debug(<span class="hljs-string">&quot;interestingTables&quot;</span>, interestingTables, dirtyTables, isDirty);
+    <span class="hljs-keyword">if</span> (isDirty) {
+      <span class="hljs-built_in">console</span>.debug(dirtyTables, interestingTables, isDirty);
+      handler();
+    }
+  });
+  addHandler(store, query, wid, handler);
+  <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> {
+    shradCusor.removeWatch(wid);
+    removeHandler(store, query, wid, handler);
+  };
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDirtyTables</span>(<span class="hljs-params">store: IQBase, commit: ICommit</span>) </span>{
+  <span class="hljs-keyword">return</span> [...new <span class="hljs-built_in">Set</span>(commit.map(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.path[<span class="hljs-number">0</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>))];
+}
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRelatedTables</span>(<span class="hljs-params">
+  store: IQBase,
+  query: ISelectQuery,
+  tableDef: ITableDefinition
+</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">string</span>&gt;([
+    query[<span class="hljs-number">1</span>],
+    ...Object.keys(query[<span class="hljs-number">2</span>].includes || []).reduce&lt;<span class="hljs-built_in">string</span>[]&gt;(
+      <span class="hljs-function">(<span class="hljs-params">state: <span class="hljs-built_in">string</span>[], includeName: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> relation = getRelationDefintion(store, tableDef, includeName);
+        <span class="hljs-keyword">if</span> (relation[<span class="hljs-number">0</span>] === R.MTM) {
+          <span class="hljs-keyword">return</span> [
+            ...state,
+            relation[<span class="hljs-number">2</span>].tableName,
+            relation[<span class="hljs-number">2</span>].through <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>,
+          ];
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-keyword">return</span> state;
+        }
+      },
+      [] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>[]
+    ),
+  ]);
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addHandler</span>(<span class="hljs-params">
+  store: IQBase,
+  query: ISelectQuery,
+  wid: <span class="hljs-built_in">string</span>,
+  handler: <span class="hljs-built_in">Function</span>
+</span>) </span>{
+  <span class="hljs-keyword">const</span> queryHash = checksum(query);
+  <span class="hljs-keyword">let</span> exisitngDef = store.queries.get(queryHash);
+  <span class="hljs-keyword">let</span> handlers = store.queryHandlers.get(queryHash);
+  <span class="hljs-keyword">if</span> (!exisitngDef || !handlers) {
+    store.queries.set(wid, [query, queryHash, wid]);
+    handlers = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>([]);
+    store.queryHandlers.set(queryHash, handlers);
+  }
+  <span class="hljs-keyword">if</span> (!handlers) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NODEF&quot;</span>);
+  }
+  handlers.add(handler);
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeHandler</span>(<span class="hljs-params">
+  store: IQBase,
+  query: ISelectQuery,
+  wid: <span class="hljs-built_in">string</span>,
+  handler: <span class="hljs-built_in">Function</span>
+</span>) </span>{
+  <span class="hljs-keyword">const</span> exisitngDef = store.queries.get(wid);
+  <span class="hljs-keyword">if</span> (!exisitngDef) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NO_WATCH&quot;</span>);
+  }
+  <span class="hljs-keyword">const</span> [q, queryHash] = exisitngDef;
+  <span class="hljs-keyword">const</span> handlers = store.queryHandlers.get(queryHash);
+  <span class="hljs-keyword">if</span> (!exisitngDef || !handlers) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NODEF&quot;</span>);
+  }
+  handlers.delete(handler);
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
