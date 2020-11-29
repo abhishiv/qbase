@@ -29,8 +29,7 @@ doc-file:
 doc:
 	ls -l
 	rm -rf docs/
-	mkdir p docs
-	cp -r src/src/ docs/
+	cp -r src docs
 	ls -l docs/
 	env SRC_FILE=./docs/index.ts make doc-file
 	env SRC_FILE=./docs/relational.ts make doc-file
