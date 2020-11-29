@@ -4,7 +4,7 @@
 @gratico/qbase
 =====
 
-Simple active record like ORM for browser
+Simple active record like ORM for browser with MongoDB styled queries and watchable queries.
 
 Install and use
 ---------------
@@ -35,16 +35,68 @@ import { checksum } from "@gratico/checksum";
 import sift from "sift";
 import shortid from "shortid";
 
-export interface IForeignKeyDefinition {
-  ref: string;
+```
+
+createStore
+---------------------------
+
+you can then attach queries to it and observe them for changes. To unobserver the call the function returned by observe
+
+
+```
+export function createStore(schema: ISchemaDefinition): IDBStore {
+  const db = createDb();
+  schema.tables.forEach((table) => {
+    createTable(db, table);
+  });
+  const queryHandlers = new Map<string, Set<Function>>();
+  const queries = new Map<string, [ISelectQuery, string, string]>();
+  const store: IDBStore = {
+    db,
+    queryHandlers,
+    queries,
+    observe: (query: ISelectQuery, handler: Function) =>
+      observe(store, query, handler),
+    schema,
+  };
+  return store;
 }
 
+export interface IDBStore {
+  db: DB;
+  queryHandlers: Map<string, Set<Function>>;
+  queries: Map<string, [ISelectQuery, string, string]>;
+  observe: Function;
+  schema: ISchemaDefinition;
+}
+
+```
+
+Schema Definition
+---------------------------
+
+List of table describing their column and realtions
+
+
+```
+export interface ISchemaDefinition {
+  name: string;
+  tables: ITableDefinition[];
+}
+export interface ITableDefinition {
+  name: string;
+  primaryKey?: string[];
+  columns: IColumnDefinition[];
+  indexes?: IIndex[];
+  relations?: ITableRelation[];
+}
 export interface IColumnDefinition {
   name: string;
   type: "NUMBER" | "INTEGER" | "STRING" | "BOOLEAN" | "DATE_TIME" | "OBJECT";
   nullable?: boolean;
   foreignKey?: IForeignKeyDefinition;
 }
+
 export interface IIndex {
   kind: "INDEX";
   name: string;
@@ -52,6 +104,14 @@ export interface IIndex {
   unique?: boolean;
 }
 
+```
+
+Relations
+---------------------------
+
+They can be Many to Many, Has Many, Belongs To, Has One Options are described as follows
+
+```
 export enum R {
   HM,
   BT,
@@ -76,32 +136,26 @@ export interface ManyToManyOptions {
   tableName: string;
   through: string;
 }
-export type IManyToMany = [R.MTM, string, ManyToManyOptions];
+export type ORDER = "ASC" | "DESC";
 export type ITableRelation =
   | [R.HM, string, HasManyOptions]
   | [R.BT, string, BelongsOptions]
   | [R.H1, string, HasOneOptions]
   | IManyToMany;
-export interface ITableDefinition {
-  name: string;
-  primaryKey?: string[];
-  columns: IColumnDefinition[];
-  indexes?: IIndex[];
-  relations?: ITableRelation[];
-}
-export interface ISchemaDefinition {
-  name: string;
-  tables: ITableDefinition[];
+export type IManyToMany = [R.MTM, string, ManyToManyOptions];
+
+export interface IForeignKeyDefinition {
+  ref: string;
 }
 
-export type ORDER = "ASC" | "DESC";
-export enum Q {
-  SELECT,
-  UPDATE,
-  INSERT,
-  DESTROY,
-}
+```
 
+Query Matchers
+---------------------------
+
+MongoDB styled query matches
+
+```
 export enum M {
   $and,
   $or,
@@ -114,6 +168,21 @@ export type IEqQuery = [M.$eq, string, any];
 export type INeqQuery = [M.$neq, string, any];
 export type IPredicate = IAndQuery | IOrQuery | IEqQuery | INeqQuery;
 
+```
+
+Queries
+---------------------------
+
+Queries supported are SELECT, UPDATE, INSERT, DESTROY
+
+```
+export enum Q {
+  SELECT,
+  UPDATE,
+  INSERT,
+  DESTROY,
+}
+
 export interface ISelectCriterion {
   columns: string[];
   order?: [string, ORDER]; // NIMP
@@ -123,12 +192,13 @@ export interface ISelectCriterion {
   skip?: number; // NIMP
 }
 export type ISelectQuery = [Q.SELECT, string, ISelectCriterion];
-
 export type IInsertQuery = [Q.INSERT, string, any[]];
+
 export interface IUpdateCiterion {
   values: Array<[string, any]>;
   predicate: IPredicate;
 }
+
 export type IUpdateQuery = [Q.UPDATE, string, IUpdateCiterion];
 export interface IDestroyCiterion {
   predicate: IPredicate;
@@ -136,13 +206,6 @@ export interface IDestroyCiterion {
 export type IDestroyQuery = [Q.DESTROY, string, IDestroyCiterion];
 export type IQuery = ISelectQuery | IInsertQuery | IUpdateQuery | IDestroyQuery;
 
-export interface IDBStore {
-  db: DB;
-  queryHandlers: Map<string, Set<Function>>;
-  queries: Map<string, [ISelectQuery, string, string]>;
-  observe: Function;
-  schema: ISchemaDefinition;
-}
 export function createTable(db: DB, tableDefinition: ITableDefinition) {
   db.state[tableDefinition.name] = {
     checksums: {},
@@ -192,9 +255,9 @@ export function observe(
   shradCusor.addWatch(wid, (id, commit) => {
     const dirtyTables = getDirtyTables(store, commit || []);
     const isDirty = dirtyTables.some((el) => interestingTables.has(el));
-    console.log("interestingTables", interestingTables, dirtyTables, isDirty);
+    console.debug("interestingTables", interestingTables, dirtyTables, isDirty);
     if (isDirty) {
-      console.log(dirtyTables, interestingTables, isDirty);
+      console.debug(dirtyTables, interestingTables, isDirty);
       handler();
     }
   });
@@ -210,7 +273,6 @@ export async function addHandler(
   wid: string,
   handler: Function
 ) {
-  const id = shortid();
   const queryHash = checksum(query);
   let exisitngDef = store.queries.get(queryHash);
   let handlers = store.queryHandlers.get(queryHash);
@@ -240,23 +302,6 @@ export async function removeHandler(
     throw new Error("NODEF");
   }
   handlers.delete(handler);
-}
-export function createStore(schema: ISchemaDefinition): IDBStore {
-  const db = createDb();
-  schema.tables.forEach((table) => {
-    createTable(db, table);
-  });
-  const queryHandlers = new Map<string, Set<Function>>();
-  const queries = new Map<string, [ISelectQuery, string, string]>();
-  const store: IDBStore = {
-    db,
-    queryHandlers,
-    queries,
-    observe: (query: ISelectQuery, handler: Function) =>
-      observe(store, query, handler),
-    schema,
-  };
-  return store;
 }
 
 export function getTableDefinition(

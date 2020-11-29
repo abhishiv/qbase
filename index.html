@@ -39,7 +39,7 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-2">&#x00a7;</a>
               </div>
-              <p>Simple active record like ORM for browser</p>
+              <p>Simple active record like ORM for browser with MongoDB styled queries and watchable queries.</p>
 <h2 id="install-and-use">Install and use</h2>
 
             </div>
@@ -95,26 +95,138 @@
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> { defWatchableCursor, ICommit } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/atom&quot;</span>;
 <span class="hljs-keyword">import</span> { checksum } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/checksum&quot;</span>;
 <span class="hljs-keyword">import</span> sift <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;sift&quot;</span>;
-<span class="hljs-keyword">import</span> shortid <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;shortid&quot;</span>;
+<span class="hljs-keyword">import</span> shortid <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;shortid&quot;</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-6">&#x00a7;</a>
+              </div>
+              <h2 id="createstore">createStore</h2>
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IForeignKeyDefinition {
-  <span class="hljs-attr">ref</span>: <span class="hljs-built_in">string</span>;
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-7">&#x00a7;</a>
+              </div>
+              <p>you can then attach queries to it and observe them for changes. To unobserver the call the function returned by observe</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createStore</span>(<span class="hljs-params">schema: ISchemaDefinition</span>): <span class="hljs-title">IDBStore</span> </span>{
+  <span class="hljs-keyword">const</span> db = createDb();
+  schema.tables.forEach(<span class="hljs-function">(<span class="hljs-params">table</span>) =&gt;</span> {
+    createTable(db, table);
+  });
+  <span class="hljs-keyword">const</span> queryHandlers = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">Function</span>&gt;&gt;();
+  <span class="hljs-keyword">const</span> queries = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, [ISelectQuery, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>]&gt;();
+  <span class="hljs-keyword">const</span> store: IDBStore = {
+    db,
+    queryHandlers,
+    queries,
+    <span class="hljs-attr">observe</span>: <span class="hljs-function">(<span class="hljs-params">query: ISelectQuery, handler: <span class="hljs-built_in">Function</span></span>) =&gt;</span>
+      observe(store, query, handler),
+    schema,
+  };
+  <span class="hljs-keyword">return</span> store;
 }
 
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IDBStore {
+  <span class="hljs-attr">db</span>: DB;
+  queryHandlers: <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">Function</span>&gt;&gt;;
+  queries: <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, [ISelectQuery, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>]&gt;;
+  observe: <span class="hljs-built_in">Function</span>;
+  schema: ISchemaDefinition;
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-8">&#x00a7;</a>
+              </div>
+              <h2 id="schema-definition">Schema Definition</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-9">&#x00a7;</a>
+              </div>
+              <p>List of table describing their column and realtions</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> ISchemaDefinition {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  tables: ITableDefinition[];
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> ITableDefinition {
+  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
+  primaryKey?: <span class="hljs-built_in">string</span>[];
+  columns: IColumnDefinition[];
+  indexes?: IIndex[];
+  relations?: ITableRelation[];
+}
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IColumnDefinition {
   <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
   <span class="hljs-keyword">type</span>: <span class="hljs-string">&quot;NUMBER&quot;</span> | <span class="hljs-string">&quot;INTEGER&quot;</span> | <span class="hljs-string">&quot;STRING&quot;</span> | <span class="hljs-string">&quot;BOOLEAN&quot;</span> | <span class="hljs-string">&quot;DATE_TIME&quot;</span> | <span class="hljs-string">&quot;OBJECT&quot;</span>;
   nullable?: <span class="hljs-built_in">boolean</span>;
   foreignKey?: IForeignKeyDefinition;
 }
+
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IIndex {
   <span class="hljs-attr">kind</span>: <span class="hljs-string">&quot;INDEX&quot;</span>;
   name: <span class="hljs-built_in">string</span>;
   columns: [<span class="hljs-built_in">string</span>, <span class="hljs-string">&quot;DESC&quot;</span> | <span class="hljs-string">&quot;ASC&quot;</span>][];
   unique?: <span class="hljs-built_in">boolean</span>;
-}
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-10">&#x00a7;</a>
+              </div>
+              <h2 id="relations">Relations</h2>
 
-<span class="hljs-keyword">export</span> <span class="hljs-built_in">enum</span> R {
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-11">&#x00a7;</a>
+              </div>
+              <p>They can be Many to Many, Has Many, Belongs To, Has One Options are described as follows</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-built_in">enum</span> R {
   HM,
   BT,
   H1,
@@ -138,33 +250,45 @@
   tableName: <span class="hljs-built_in">string</span>;
   through: <span class="hljs-built_in">string</span>;
 }
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IManyToMany = [R.MTM, <span class="hljs-built_in">string</span>, ManyToManyOptions];
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ORDER = <span class="hljs-string">&quot;ASC&quot;</span> | <span class="hljs-string">&quot;DESC&quot;</span>;
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ITableRelation =
   | [R.HM, <span class="hljs-built_in">string</span>, HasManyOptions]
   | [R.BT, <span class="hljs-built_in">string</span>, BelongsOptions]
   | [R.H1, <span class="hljs-built_in">string</span>, HasOneOptions]
   | IManyToMany;
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> ITableDefinition {
-  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
-  primaryKey?: <span class="hljs-built_in">string</span>[];
-  columns: IColumnDefinition[];
-  indexes?: IIndex[];
-  relations?: ITableRelation[];
-}
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> ISchemaDefinition {
-  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;
-  tables: ITableDefinition[];
-}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IManyToMany = [R.MTM, <span class="hljs-built_in">string</span>, ManyToManyOptions];
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ORDER = <span class="hljs-string">&quot;ASC&quot;</span> | <span class="hljs-string">&quot;DESC&quot;</span>;
-<span class="hljs-keyword">export</span> <span class="hljs-built_in">enum</span> Q {
-  SELECT,
-  UPDATE,
-  INSERT,
-  DESTROY,
-}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IForeignKeyDefinition {
+  <span class="hljs-attr">ref</span>: <span class="hljs-built_in">string</span>;
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-12">&#x00a7;</a>
+              </div>
+              <h2 id="query-matchers">Query Matchers</h2>
 
-<span class="hljs-keyword">export</span> <span class="hljs-built_in">enum</span> M {
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-13">&#x00a7;</a>
+              </div>
+              <p>MongoDB styled query matches</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-built_in">enum</span> M {
   $and,
   $or,
   $eq,
@@ -174,7 +298,40 @@
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IOrQuery = [M.$or, IPredicate[]];
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IEqQuery = [M.$eq, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>];
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> INeqQuery = [M.$neq, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>];
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IPredicate = IAndQuery | IOrQuery | IEqQuery | INeqQuery;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IPredicate = IAndQuery | IOrQuery | IEqQuery | INeqQuery;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-14">&#x00a7;</a>
+              </div>
+              <h2 id="queries">Queries</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-15">&#x00a7;</a>
+              </div>
+              <p>Queries supported are SELECT, UPDATE, INSERT, DESTROY</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-built_in">enum</span> Q {
+  SELECT,
+  UPDATE,
+  INSERT,
+  DESTROY,
+}
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> ISelectCriterion {
   <span class="hljs-attr">columns</span>: <span class="hljs-built_in">string</span>[];
@@ -185,12 +342,13 @@
   skip?: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// NIMP</span>
 }
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ISelectQuery = [Q.SELECT, <span class="hljs-built_in">string</span>, ISelectCriterion];
-
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IInsertQuery = [Q.INSERT, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>[]];
+
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IUpdateCiterion {
   <span class="hljs-attr">values</span>: <span class="hljs-built_in">Array</span>&lt;[<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>]&gt;;
   predicate: IPredicate;
 }
+
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IUpdateQuery = [Q.UPDATE, <span class="hljs-built_in">string</span>, IUpdateCiterion];
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IDestroyCiterion {
   <span class="hljs-attr">predicate</span>: IPredicate;
@@ -198,13 +356,6 @@
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IDestroyQuery = [Q.DESTROY, <span class="hljs-built_in">string</span>, IDestroyCiterion];
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IQuery = ISelectQuery | IInsertQuery | IUpdateQuery | IDestroyQuery;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IDBStore {
-  <span class="hljs-attr">db</span>: DB;
-  queryHandlers: <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">Function</span>&gt;&gt;;
-  queries: <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, [ISelectQuery, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>]&gt;;
-  observe: <span class="hljs-built_in">Function</span>;
-  schema: ISchemaDefinition;
-}
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createTable</span>(<span class="hljs-params">db: DB, tableDefinition: ITableDefinition</span>) </span>{
   db.state[tableDefinition.name] = {
     <span class="hljs-attr">checksums</span>: {},
@@ -254,9 +405,9 @@
   shradCusor.addWatch(wid, <span class="hljs-function">(<span class="hljs-params">id, commit</span>) =&gt;</span> {
     <span class="hljs-keyword">const</span> dirtyTables = getDirtyTables(store, commit || []);
     <span class="hljs-keyword">const</span> isDirty = dirtyTables.some(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> interestingTables.has(el));
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;interestingTables&quot;</span>, interestingTables, dirtyTables, isDirty);
+    <span class="hljs-built_in">console</span>.debug(<span class="hljs-string">&quot;interestingTables&quot;</span>, interestingTables, dirtyTables, isDirty);
     <span class="hljs-keyword">if</span> (isDirty) {
-      <span class="hljs-built_in">console</span>.log(dirtyTables, interestingTables, isDirty);
+      <span class="hljs-built_in">console</span>.debug(dirtyTables, interestingTables, isDirty);
       handler();
     }
   });
@@ -272,7 +423,6 @@
   wid: <span class="hljs-built_in">string</span>,
   handler: <span class="hljs-built_in">Function</span>
 </span>) </span>{
-  <span class="hljs-keyword">const</span> id = shortid();
   <span class="hljs-keyword">const</span> queryHash = checksum(query);
   <span class="hljs-keyword">let</span> exisitngDef = store.queries.get(queryHash);
   <span class="hljs-keyword">let</span> handlers = store.queryHandlers.get(queryHash);
@@ -303,23 +453,6 @@
   }
   handlers.delete(handler);
 }
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createStore</span>(<span class="hljs-params">schema: ISchemaDefinition</span>): <span class="hljs-title">IDBStore</span> </span>{
-  <span class="hljs-keyword">const</span> db = createDb();
-  schema.tables.forEach(<span class="hljs-function">(<span class="hljs-params">table</span>) =&gt;</span> {
-    createTable(db, table);
-  });
-  <span class="hljs-keyword">const</span> queryHandlers = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">Function</span>&gt;&gt;();
-  <span class="hljs-keyword">const</span> queries = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, [ISelectQuery, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>]&gt;();
-  <span class="hljs-keyword">const</span> store: IDBStore = {
-    db,
-    queryHandlers,
-    queries,
-    <span class="hljs-attr">observe</span>: <span class="hljs-function">(<span class="hljs-params">query: ISelectQuery, handler: <span class="hljs-built_in">Function</span></span>) =&gt;</span>
-      observe(store, query, handler),
-    schema,
-  };
-  <span class="hljs-keyword">return</span> store;
-}
 
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTableDefinition</span>(<span class="hljs-params">
   db: IDBStore,
@@ -343,11 +476,11 @@
         </li>
         
         
-        <li id="section-6">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="sswrap ">
-                <a class="ss" href="#section-6">&#x00a7;</a>
+                <a class="ss" href="#section-16">&#x00a7;</a>
               </div>
               <p>performance</p>
 
