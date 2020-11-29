@@ -26,13 +26,14 @@
   "dependencies": {
     "@gratico/atom": "^0.1.1",
     "@gratico/checksum": "*",
+    "normalizr": "^3.6.1",
     "shortid": "^2.2.15",
-    "sift": "^13.1.10",
-    "normalizr": "^3.6.1"
+    "sift": "^13.1.10"
   },
   "peerDependencies": {},
   "devDependencies": {
     "@types/jest": "^26.0.0",
+    "@types/shortid": "^0.0.29",
     "docco-next": "^0.9.3",
     "jest": "^26.0.1",
     "typedoc": "^0.19.2",
