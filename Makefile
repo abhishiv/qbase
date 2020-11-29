@@ -38,5 +38,7 @@ doc:
 	env SRC_FILE=./docs/types.ts make doc-file
 	env SRC_FILE=./docs/watch.ts make doc-file
 	./node_modules/.bin/typedoc --theme ./node_modules/@gratico/docs-site/src/themes/typedoc/default  --out ./docs/typedoc   --includeDeclarations --exclude "**/node_modules/**/*" --inputFiles ./src
+	cp -r ./_config.yml ./docs/_config.yml
+	echo 42 > .nojekyll
 
 
