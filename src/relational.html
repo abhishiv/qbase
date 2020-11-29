@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>@gratico/qbase/relational</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="https://cdn.jsdelivr.net/npm/docco-next@0.9.3/layouts/parallel/docco.css" />
+  <style>
+    h1,h2,h3,h4,h5 {
+      text-transform: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-1">&#x00a7;</a>
+              </div>
+              <h1 id="graticoqbaserelational">@gratico/qbase/relational</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-2">&#x00a7;</a>
+              </div>
+              <p>Relational helpers that modify underlying storage</p>
+<h2 id="install-and-use">Install and use</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-3">&#x00a7;</a>
+              </div>
+              <p>To use run <code>npm install -g @gratico/qbase</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> {
+  Atom,
+  defAtom,
+  defCursor,
+  deref,
+  ICommit,
+  commitPatch,
+} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/atom&quot;</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-4">&#x00a7;</a>
+              </div>
+              <p>checksums are generated for each record and for the entire table as well - this is needed in order to skip unneeded query watches
+we combine this property along with a relational schema to create</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> { checksum } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/checksum&quot;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> DB&lt;T = <span class="hljs-built_in">any</span>&gt; = Atom&lt;T&gt;;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IAtomTable&lt;T = unknown&gt; {
+  <span class="hljs-attr">value</span>: {
+    [id: <span class="hljs-built_in">string</span>]: T;
+  };
+  checksums: {
+    [id: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">string</span>;
+  };
+  checksum: <span class="hljs-built_in">string</span>;
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IAtomShrad {
+  [tableName: <span class="hljs-built_in">string</span>]: IAtomTable;
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IAtomShape {
+  [shradId: <span class="hljs-built_in">string</span>]: IAtomShrad;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IAtomOpOptions {
+  nodeId?: <span class="hljs-built_in">string</span>;
+  tx?: <span class="hljs-built_in">any</span>;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defDb</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> atom = defAtom&lt;IAtomShape&gt;({});
+  <span class="hljs-keyword">return</span> atom;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getShradCursorPath</span>(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  options: IAtomOpOptions = {}
+</span>) </span>{
+  <span class="hljs-keyword">const</span> shradCursor: <span class="hljs-built_in">string</span>[] = [];
+  <span class="hljs-keyword">return</span> shradCursor;
+}
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTableCursorPath</span>(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  tableName: <span class="hljs-built_in">string</span>,
+  options: IAtomOpOptions = {}
+</span>) </span>{
+  <span class="hljs-keyword">const</span> shradCursor = getShradCursorPath(store, options);
+  <span class="hljs-keyword">return</span> [...shradCursor, ...[tableName]];
+}
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRecordCursorPath</span>(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  tableName: <span class="hljs-built_in">string</span>,
+  id: <span class="hljs-built_in">string</span>,
+  options: IAtomOpOptions = {}
+</span>) </span>{
+  <span class="hljs-keyword">const</span> shradCursor = getShradCursorPath(store, options);
+  <span class="hljs-keyword">return</span> [...shradCursor, ...[tableName, <span class="hljs-string">&quot;value&quot;</span>, id]];
+}
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRecordCursor</span>(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  tableName: <span class="hljs-built_in">string</span>,
+  id: <span class="hljs-built_in">string</span>,
+  options: IAtomOpOptions = {}
+</span>) </span>{
+  <span class="hljs-keyword">const</span> recordCursor = defCursor(
+    store,
+    getRecordCursorPath(store, tableName, id, options)
+  );
+  <span class="hljs-keyword">return</span> recordCursor;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRecord</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  tableName: <span class="hljs-built_in">string</span>,
+  id: <span class="hljs-built_in">string</span>,
+  options: IAtomOpOptions = {}
+</span>): <span class="hljs-title">T</span> </span>{
+  <span class="hljs-keyword">const</span> recordCursor = getRecordCursor(store, tableName, id, options);
+  <span class="hljs-keyword">return</span> deref(store, recordCursor);
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTableCursor</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  tableName: <span class="hljs-built_in">string</span>,
+  options: IAtomOpOptions = {}
+</span>) </span>{
+  <span class="hljs-keyword">const</span> recordCursor = defCursor(
+    store,
+    getTableCursorPath(store, tableName, options)
+  );
+  <span class="hljs-keyword">return</span> recordCursor;
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-5">&#x00a7;</a>
+              </div>
+              <h2 id="get">GET</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-6">&#x00a7;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRecords</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  tableName: <span class="hljs-built_in">string</span>,
+  options: IAtomOpOptions = {}
+</span>): <span class="hljs-title">IAtomTable</span>&lt;<span class="hljs-title">T</span>&gt; </span>{
+  <span class="hljs-keyword">const</span> tableCursor = getTableCursor&lt;T&gt;(store, tableName, options);
+  <span class="hljs-keyword">return</span> deref(store, tableCursor);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-7">&#x00a7;</a>
+              </div>
+              <h2 id="post">POST</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-8">&#x00a7;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createRecord</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  tableName: <span class="hljs-built_in">string</span>,
+  options: IAtomOpOptions,
+  id: <span class="hljs-built_in">string</span>,
+  value: T
+</span>) </span>{
+  <span class="hljs-keyword">const</span> tableCursorPath = getTableCursorPath(store, tableName, options);
+  modifyRecord&lt;T&gt;(store, tableCursorPath, id, value, options);
+  <span class="hljs-keyword">return</span> getRecord(store, tableName, id, options);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-9">&#x00a7;</a>
+              </div>
+              <h2 id="put">PUT</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-10">&#x00a7;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateRecord</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  tableName: <span class="hljs-built_in">string</span>,
+  options: IAtomOpOptions,
+  id: <span class="hljs-built_in">string</span>,
+  value: T
+</span>) </span>{
+  <span class="hljs-keyword">const</span> tableCursorPath = getTableCursorPath(store, tableName, options);
+  modifyRecord&lt;T&gt;(store, tableCursorPath, id, value, options);
+  <span class="hljs-keyword">return</span> getRecord(store, tableName, id, options);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-11">&#x00a7;</a>
+              </div>
+              <h2 id="delete">DELETE</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-12">&#x00a7;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deleteRecord</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  tableName: <span class="hljs-built_in">string</span>,
+  options: IAtomOpOptions,
+  id: <span class="hljs-built_in">string</span>
+</span>) </span>{
+  <span class="hljs-keyword">const</span> tableCursorPath = getTableCursorPath(store, tableName, options);
+  modifyRecord&lt;T&gt;(store, tableCursorPath, id, <span class="hljs-literal">null</span>, options);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-13">&#x00a7;</a>
+              </div>
+              <h2 id="workhorse-function">workhorse function</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-14">&#x00a7;</a>
+              </div>
+              <p>responsible for actually modify underlying storage while calcullating appropriate checksums(including in case of delete)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">modifyRecord</span>&lt;<span class="hljs-title">T</span>&gt;(<span class="hljs-params">
+  store: Atom&lt;unknown&gt;,
+  tableCursorPath: <span class="hljs-built_in">string</span>[],
+  recordId: <span class="hljs-built_in">string</span>,
+  recordValue: T | <span class="hljs-literal">null</span>,
+  options: IAtomOpOptions,
+  del: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">false</span>
+</span>) </span>{
+  <span class="hljs-keyword">const</span> tableCursor = defCursor(store, tableCursorPath);
+  <span class="hljs-keyword">const</span> table: IAtomTable = deref(store, tableCursor) || { <span class="hljs-attr">value</span>: {} };
+  <span class="hljs-keyword">let</span> tableChecksumList = <span class="hljs-built_in">Object</span>.values(table.value)
+    .map(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item: <span class="hljs-built_in">any</span></span>) </span>{
+      <span class="hljs-keyword">return</span> [item.id, table.checksums[item.id]];
+    })
+    .filter(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el[<span class="hljs-number">0</span>] !== recordId);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-15">&#x00a7;</a>
+              </div>
+              <p>performance hence push insread of spread</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> (!del) {
+    tableChecksumList.push([recordId, checksum(recordValue)]);
+  }
+  <span class="hljs-keyword">const</span> tableChecksum = checksum(tableChecksumList.map(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el[<span class="hljs-number">1</span>]));
+
+  <span class="hljs-keyword">const</span> commit: ICommit = [];
+
+  <span class="hljs-keyword">if</span> (del) {
+    commit.push({
+      <span class="hljs-attr">op</span>: <span class="hljs-string">&quot;replace&quot;</span>,
+      <span class="hljs-attr">path</span>: [...tableCursorPath, <span class="hljs-string">&quot;value&quot;</span>, recordId],
+      <span class="hljs-attr">value</span>: <span class="hljs-literal">undefined</span>,
+    });
+    commit.push({
+      <span class="hljs-attr">op</span>: <span class="hljs-string">&quot;replace&quot;</span>,
+      <span class="hljs-attr">path</span>: [...tableCursorPath, <span class="hljs-string">&quot;checksums&quot;</span>, recordId],
+      <span class="hljs-attr">value</span>: <span class="hljs-literal">undefined</span>,
+    });
+  } <span class="hljs-keyword">else</span> {
+    commit.push({
+      <span class="hljs-attr">op</span>: <span class="hljs-string">&quot;replace&quot;</span>,
+      <span class="hljs-attr">path</span>: [...tableCursorPath, <span class="hljs-string">&quot;value&quot;</span>, recordId],
+      <span class="hljs-attr">value</span>: recordValue,
+    });
+    commit.push({
+      <span class="hljs-attr">op</span>: <span class="hljs-string">&quot;replace&quot;</span>,
+      <span class="hljs-attr">path</span>: [...tableCursorPath, <span class="hljs-string">&quot;checksums&quot;</span>, recordId],
+      <span class="hljs-attr">value</span>: checksum(recordValue),
+    });
+  }
+  commit.push({
+    <span class="hljs-attr">op</span>: <span class="hljs-string">&quot;replace&quot;</span>,
+    <span class="hljs-attr">path</span>: [...tableCursorPath, <span class="hljs-string">&quot;checksum&quot;</span>],
+    <span class="hljs-attr">value</span>: tableChecksum,
+  });
+  <span class="hljs-keyword">return</span> commitPatch(store, commit);
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

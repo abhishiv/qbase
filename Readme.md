@@ -4,7 +4,6 @@
 @gratico/qbase
 =====
 
-TODO: clean up Watch interface
 Simple active record like ORM for browser
 
 Install and use
@@ -17,16 +16,15 @@ To use run `npm install -g @gratico/qbase`
 ```
 import {
   DB,
-  createStore as createDb,
+  defDb as createDb,
   createRecord,
   updateRecord,
   modifyRecord,
   deleteRecord,
   getRecords,
-  createTransaction,
   getShradCursorPath,
 } from "./relational";
-import { defUpdatableCursor, ICommit } from "@gratico/atom";
+import { defWatchableCursor, ICommit } from "@gratico/atom";
 import { checksum } from "@gratico/checksum";
 import sift from "sift";
 import shortid from "shortid";
@@ -184,7 +182,7 @@ export function observe(
   const wid = id + "/" + queryHash;
   const tableDef = getTableDefinition(store, query[1]);
   const interestingTables = getRelatedTables(store, query, tableDef);
-  const shradCusor = defUpdatableCursor(store.db, getShradCursorPath(store.db));
+  const shradCusor = defWatchableCursor(store.db, getShradCursorPath(store.db));
   shradCusor.addWatch(wid, (id, commit) => {
     const dirtyTables = getDirtyTables(store, commit || []);
     const isDirty = dirtyTables.some((el) => interestingTables.has(el));

@@ -39,8 +39,7 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-2">&#x00a7;</a>
               </div>
-              <p>TODO: clean up Watch interface
-Simple active record like ORM for browser</p>
+              <p>Simple active record like ORM for browser</p>
 <h2 id="install-and-use">Install and use</h2>
 
             </div>
@@ -60,16 +59,15 @@ Simple active record like ORM for browser</p>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> {
   DB,
-  createStore <span class="hljs-keyword">as</span> createDb,
+  defDb <span class="hljs-keyword">as</span> createDb,
   createRecord,
   updateRecord,
   modifyRecord,
   deleteRecord,
   getRecords,
-  createTransaction,
   getShradCursorPath,
 } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./relational&quot;</span>;
-<span class="hljs-keyword">import</span> { defUpdatableCursor, ICommit } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/atom&quot;</span>;
+<span class="hljs-keyword">import</span> { defWatchableCursor, ICommit } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/atom&quot;</span>;
 <span class="hljs-keyword">import</span> { checksum } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/checksum&quot;</span>;
 <span class="hljs-keyword">import</span> sift <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;sift&quot;</span>;
 <span class="hljs-keyword">import</span> shortid <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;shortid&quot;</span>;
@@ -227,7 +225,7 @@ Simple active record like ORM for browser</p>
   <span class="hljs-keyword">const</span> wid = id + <span class="hljs-string">&quot;/&quot;</span> + queryHash;
   <span class="hljs-keyword">const</span> tableDef = getTableDefinition(store, query[<span class="hljs-number">1</span>]);
   <span class="hljs-keyword">const</span> interestingTables = getRelatedTables(store, query, tableDef);
-  <span class="hljs-keyword">const</span> shradCusor = defUpdatableCursor(store.db, getShradCursorPath(store.db));
+  <span class="hljs-keyword">const</span> shradCusor = defWatchableCursor(store.db, getShradCursorPath(store.db));
   shradCusor.addWatch(wid, <span class="hljs-function">(<span class="hljs-params">id, commit</span>) =&gt;</span> {
     <span class="hljs-keyword">const</span> dirtyTables = getDirtyTables(store, commit || []);
     <span class="hljs-keyword">const</span> isDirty = dirtyTables.some(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> interestingTables.has(el));

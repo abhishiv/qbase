@@ -1,14 +1,19 @@
-/* eslint  no-var: "error" */
 
-// @gratico/qbase/relational
-// =====
-// Relational helpers that modify underlying storage
+# @gratico/qbase/relational
 
-// Install and use
-// ---------------
-// To use run `npm install -g @gratico/qbase`
-//
+@gratico/qbase/relational
+=====
 
+Relational helpers that modify underlying storage
+
+Install and use
+---------------
+
+To use run `npm install -g @gratico/qbase`
+
+
+
+```
 import {
   Atom,
   defAtom,
@@ -17,8 +22,12 @@ import {
   ICommit,
   commitPatch,
 } from "@gratico/atom";
-// checksums are generated for each record and for the entire table as well - this is needed in order to skip unneeded query watches
-// we combine this property along with a relational schema to create
+```
+
+checksums are generated for each record and for the entire table as well - this is needed in order to skip unneeded query watches
+we combine this property along with a relational schema to create
+
+```
 import { checksum } from "@gratico/checksum";
 
 export type DB<T = any> = Atom<T>;
@@ -108,8 +117,12 @@ export function getTableCursor<T>(
   return recordCursor;
 }
 
-// GET
-// ---------------------------
+```
+
+GET
+---------------------------
+
+```
 export function getRecords<T>(
   store: Atom<unknown>,
   tableName: string,
@@ -119,8 +132,12 @@ export function getRecords<T>(
   return deref(store, tableCursor);
 }
 
-// POST
-// ---------------------------
+```
+
+POST
+---------------------------
+
+```
 export function createRecord<T>(
   store: Atom<unknown>,
   tableName: string,
@@ -133,8 +150,12 @@ export function createRecord<T>(
   return getRecord(store, tableName, id, options);
 }
 
-// PUT
-// ---------------------------
+```
+
+PUT
+---------------------------
+
+```
 export function updateRecord<T>(
   store: Atom<unknown>,
   tableName: string,
@@ -147,8 +168,12 @@ export function updateRecord<T>(
   return getRecord(store, tableName, id, options);
 }
 
-// DELETE
-// ---------------------------
+```
+
+DELETE
+---------------------------
+
+```
 export function deleteRecord<T>(
   store: Atom<unknown>,
   tableName: string,
@@ -159,9 +184,14 @@ export function deleteRecord<T>(
   modifyRecord<T>(store, tableCursorPath, id, null, options);
 }
 
-// modifyRecord
-// ---------------------------
-// workhorse function responsible for actually modify underlying storage while calcullating appropriate checksums(including in case of delete)
+```
+
+workhorse function
+---------------------------
+
+responsible for actually modify underlying storage while calcullating appropriate checksums(including in case of delete)
+
+```
 export function modifyRecord<T>(
   store: Atom<unknown>,
   tableCursorPath: string[],
@@ -177,7 +207,11 @@ export function modifyRecord<T>(
       return [item.id, table.checksums[item.id]];
     })
     .filter((el) => el[0] !== recordId);
-  // performance hence push insread of spread
+```
+
+performance hence push insread of spread
+
+```
   if (!del) {
     tableChecksumList.push([recordId, checksum(recordValue)]);
   }
@@ -215,3 +249,7 @@ export function modifyRecord<T>(
   });
   return commitPatch(store, commit);
 }
+
+```
+
+

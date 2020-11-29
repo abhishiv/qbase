@@ -19,12 +19,17 @@ build:
 tsc:
 	./node_modules/.bin/tsc --resolveJsonModule -p ./tsconfig.json
 
+.PHONY: doc-file
+doc-file:
+	./node_modules/.bin/docco -o . -x md -l plain  ${SRC_FILE}
+	./node_modules/.bin/docco -o .  -l ../../tools/docco/theme/  ${SRC_FILE}
+
+
 .PHONY: doc
 doc:
-	./node_modules/.bin/docco -o . -x md -l plain  ./src/index.ts
-	rm -rf ./Readme.md
+	env SRC_FILE=./src/index.ts make doc-file
+	env SRC_FILE=./src/relational.ts make doc-file
 	mv ./src/index.md ./Readme.md
-	./node_modules/.bin/docco -o .  -l ../../tools/docco/theme/  ./src/index.ts
 	mv ./src/index.html ./index.html
 	./node_modules/.bin/typedoc --theme ../../tools/typedoc/default  --out ./docs/types   --includeDeclarations --exclude "**/node_modules/**/*" --inputFiles ./src
 
