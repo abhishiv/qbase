@@ -29,7 +29,7 @@ doc-file:
 .PHONY: doc
 doc:
 	mkdir -p docs
-	cp -r src docs
+	cp -r src/ docs/
 	env SRC_FILE=./docs/index.ts make doc-file
 	env SRC_FILE=./docs/relational.ts make doc-file
 	env SRC_FILE=./docs/utils.ts make doc-file

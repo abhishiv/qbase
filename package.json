@@ -18,6 +18,9 @@
   "module": "./dist/esm/index.mjs",
   "main": "./dist/cjs/index.js",
   "typings": "./dist/cjs/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "./node_modules/.bin/jest --runInBand",
     "pub": "npm publish --access=public",
