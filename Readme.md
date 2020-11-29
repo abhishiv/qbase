@@ -62,6 +62,14 @@ export function createStore(schema: ISchemaDefinition): IDBStore {
   return store;
 }
 
+export function createTable(db: DB, tableDefinition: ITableDefinition) {
+  db.state[tableDefinition.name] = {
+    checksums: {},
+    value: {},
+  };
+  return tableDefinition;
+}
+
 export interface IDBStore {
   db: DB;
   queryHandlers: Map<string, Set<Function>>;
@@ -206,112 +214,19 @@ export interface IDestroyCiterion {
 export type IDestroyQuery = [Q.DESTROY, string, IDestroyCiterion];
 export type IQuery = ISelectQuery | IInsertQuery | IUpdateQuery | IDestroyQuery;
 
-export function createTable(db: DB, tableDefinition: ITableDefinition) {
-  db.state[tableDefinition.name] = {
-    checksums: {},
-    value: {},
-  };
-  return tableDefinition;
-}
-
-export function getDirtyTables(store: IDBStore, commit: ICommit) {
-  return [...new Set(commit.map((el) => el.path[0] as string))];
-}
-export function getRelatedTables(
-  store: IDBStore,
-  query: ISelectQuery,
-  tableDef: ITableDefinition
-) {
-  return new Set<string>([
-    query[1],
-    ...Object.keys(query[2].includes || []).reduce<string[]>(
-      (state: string[], includeName: string) => {
-        const relation = getRelationDefintion(store, tableDef, includeName);
-        if (relation[0] === R.MTM) {
-          return [
-            ...state,
-            relation[2].tableName,
-            relation[2].through as string,
-          ];
-        } else {
-          return state;
-        }
-      },
-      [] as string[]
-    ),
-  ]);
-}
-export function observe(
-  store: IDBStore,
-  query: ISelectQuery,
-  handler: Function
-) {
-  const id = shortid();
-  const queryHash = checksum(query);
-  const wid = id + "/" + queryHash;
-  const tableDef = getTableDefinition(store, query[1]);
-  const interestingTables = getRelatedTables(store, query, tableDef);
-  const shradCusor = defWatchableCursor(store.db, getShradCursorPath(store.db));
-  shradCusor.addWatch(wid, (id, commit) => {
-    const dirtyTables = getDirtyTables(store, commit || []);
-    const isDirty = dirtyTables.some((el) => interestingTables.has(el));
-    console.debug("interestingTables", interestingTables, dirtyTables, isDirty);
-    if (isDirty) {
-      console.debug(dirtyTables, interestingTables, isDirty);
-      handler();
-    }
-  });
-  addHandler(store, query, wid, handler);
+export function getInsert(db: IDBStore, query: IInsertQuery) {
   return () => {
-    shradCusor.removeWatch(wid);
-    removeHandler(store, query, wid, handler);
+    const tableName = query[1];
+    const rows = query[2].map((el) => el);
+
+    rows.forEach((row) => {
+      createRecord(db.db, tableName, {}, row.id, row);
+    });
   };
 }
-export async function addHandler(
-  store: IDBStore,
-  query: ISelectQuery,
-  wid: string,
-  handler: Function
-) {
-  const queryHash = checksum(query);
-  let exisitngDef = store.queries.get(queryHash);
-  let handlers = store.queryHandlers.get(queryHash);
-  if (!exisitngDef || !handlers) {
-    store.queries.set(wid, [query, queryHash, wid]);
-    handlers = new Set([]);
-    store.queryHandlers.set(queryHash, handlers);
-  }
-  if (!handlers) {
-    throw new Error("NODEF");
-  }
-  handlers.add(handler);
-}
-export async function removeHandler(
-  store: IDBStore,
-  query: ISelectQuery,
-  wid: string,
-  handler: Function
-) {
-  const exisitngDef = store.queries.get(wid);
-  if (!exisitngDef) {
-    throw new Error("NO_WATCH");
-  }
-  const [q, queryHash] = exisitngDef;
-  const handlers = store.queryHandlers.get(queryHash);
-  if (!exisitngDef || !handlers) {
-    throw new Error("NODEF");
-  }
-  handlers.delete(handler);
-}
 
-export function getTableDefinition(
-  db: IDBStore,
-  tableName: string
-): ITableDefinition {
-  const table = db.schema.tables.find((el) => el.name == tableName);
-  if (!table) throw new Error("no_table " + tableName);
-  return table;
-}
+export function getDestroy(db: IDBStore, query: IDestroyQuery) {}
+export function getUpdate(db: IDBStore, query: IUpdateQuery) {}
 
 export function getSelect(db: IDBStore, query: ISelectQuery) {
   return () => {
@@ -367,6 +282,45 @@ performance
     });
   };
 }
+
+export function compilePredicate(
+  db: IDBStore,
+  query: ISelectQuery | IUpdateQuery | IDestroyQuery,
+  predicate: IPredicate = query[2].predicate as IPredicate
+) {
+  if (!predicate) {
+    throw new Error("NO_PREDICATE");
+  }
+  const type = predicate[0];
+  const columnName = predicate[1] as string;
+  const value = predicate[2] as any;
+
+  if (type === M.$eq) {
+    return { [columnName]: { $eq: value } };
+  } else if (type == M.$and) {
+    return {
+      $and: value.map((el: IPredicate) => compilePredicate(db, query, el)),
+    };
+  } else if (type === M.$or) {
+    return {
+      $or: value.map((el: IPredicate) => compilePredicate(db, query, el)),
+    };
+  } else if (type === M.$neq) {
+    return { [columnName]: { $neq: value } };
+  } else {
+    throw new Error("INVALID PREDICATE = " + type);
+  }
+}
+
+export function getTableDefinition(
+  db: IDBStore,
+  tableName: string
+): ITableDefinition {
+  const table = db.schema.tables.find((el) => el.name == tableName);
+  if (!table) throw new Error("no_table " + tableName);
+  return table;
+}
+
 export function getRelationDefintion(
   db: IDBStore,
   tableDef: ITableDefinition,
@@ -428,48 +382,96 @@ export function compileIncludeQuery<T = any>(
   return [];
 }
 
-export function getInsert(db: IDBStore, query: IInsertQuery) {
+export function observe(
+  store: IDBStore,
+  query: ISelectQuery,
+  handler: Function
+) {
+  const id = shortid();
+  const queryHash = checksum(query);
+  const wid = id + "/" + queryHash;
+  const tableDef = getTableDefinition(store, query[1]);
+  const interestingTables = getRelatedTables(store, query, tableDef);
+  const shradCusor = defWatchableCursor(store.db, getShradCursorPath(store.db));
+  shradCusor.addWatch(wid, (id, commit) => {
+    const dirtyTables = getDirtyTables(store, commit || []);
+    const isDirty = dirtyTables.some((el) => interestingTables.has(el));
+    console.debug("interestingTables", interestingTables, dirtyTables, isDirty);
+    if (isDirty) {
+      console.debug(dirtyTables, interestingTables, isDirty);
+      handler();
+    }
+  });
+  addHandler(store, query, wid, handler);
   return () => {
-    const tableName = query[1];
-    const rows = query[2].map((el) => el);
-
-    rows.forEach((row) => {
-      createRecord(db.db, tableName, {}, row.id, row);
-    });
+    shradCusor.removeWatch(wid);
+    removeHandler(store, query, wid, handler);
   };
 }
 
-export function compilePredicate(
-  db: IDBStore,
-  query: ISelectQuery | IUpdateQuery | IDestroyQuery,
-  predicate: IPredicate = query[2].predicate as IPredicate
-) {
-  if (!predicate) {
-    throw new Error("NO_PREDICATE");
-  }
-  const type = predicate[0];
-  const columnName = predicate[1] as string;
-  const value = predicate[2] as any;
-
-  if (type === M.$eq) {
-    return { [columnName]: { $eq: value } };
-  } else if (type == M.$and) {
-    return {
-      $and: value.map((el: IPredicate) => compilePredicate(db, query, el)),
-    };
-  } else if (type === M.$or) {
-    return {
-      $or: value.map((el: IPredicate) => compilePredicate(db, query, el)),
-    };
-  } else if (type === M.$neq) {
-    return { [columnName]: { $neq: value } };
-  } else {
-    throw new Error("INVALID PREDICATE = " + type);
-  }
+export function getDirtyTables(store: IDBStore, commit: ICommit) {
+  return [...new Set(commit.map((el) => el.path[0] as string))];
 }
-
-export function getDestroy(db: IDBStore, query: IDestroyQuery) {}
-export function getUpdate(db: IDBStore, query: IUpdateQuery) {}
+export function getRelatedTables(
+  store: IDBStore,
+  query: ISelectQuery,
+  tableDef: ITableDefinition
+) {
+  return new Set<string>([
+    query[1],
+    ...Object.keys(query[2].includes || []).reduce<string[]>(
+      (state: string[], includeName: string) => {
+        const relation = getRelationDefintion(store, tableDef, includeName);
+        if (relation[0] === R.MTM) {
+          return [
+            ...state,
+            relation[2].tableName,
+            relation[2].through as string,
+          ];
+        } else {
+          return state;
+        }
+      },
+      [] as string[]
+    ),
+  ]);
+}
+export async function addHandler(
+  store: IDBStore,
+  query: ISelectQuery,
+  wid: string,
+  handler: Function
+) {
+  const queryHash = checksum(query);
+  let exisitngDef = store.queries.get(queryHash);
+  let handlers = store.queryHandlers.get(queryHash);
+  if (!exisitngDef || !handlers) {
+    store.queries.set(wid, [query, queryHash, wid]);
+    handlers = new Set([]);
+    store.queryHandlers.set(queryHash, handlers);
+  }
+  if (!handlers) {
+    throw new Error("NODEF");
+  }
+  handlers.add(handler);
+}
+export async function removeHandler(
+  store: IDBStore,
+  query: ISelectQuery,
+  wid: string,
+  handler: Function
+) {
+  const exisitngDef = store.queries.get(wid);
+  if (!exisitngDef) {
+    throw new Error("NO_WATCH");
+  }
+  const [q, queryHash] = exisitngDef;
+  const handlers = store.queryHandlers.get(queryHash);
+  if (!exisitngDef || !handlers) {
+    throw new Error("NODEF");
+  }
+  handlers.delete(handler);
+}
 
 ```
 

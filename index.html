@@ -141,6 +141,14 @@
   <span class="hljs-keyword">return</span> store;
 }
 
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createTable</span>(<span class="hljs-params">db: DB, tableDefinition: ITableDefinition</span>) </span>{
+  db.state[tableDefinition.name] = {
+    <span class="hljs-attr">checksums</span>: {},
+    <span class="hljs-attr">value</span>: {},
+  };
+  <span class="hljs-keyword">return</span> tableDefinition;
+}
+
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IDBStore {
   <span class="hljs-attr">db</span>: DB;
   queryHandlers: <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">Function</span>&gt;&gt;;
@@ -356,112 +364,19 @@
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IDestroyQuery = [Q.DESTROY, <span class="hljs-built_in">string</span>, IDestroyCiterion];
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IQuery = ISelectQuery | IInsertQuery | IUpdateQuery | IDestroyQuery;
 
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createTable</span>(<span class="hljs-params">db: DB, tableDefinition: ITableDefinition</span>) </span>{
-  db.state[tableDefinition.name] = {
-    <span class="hljs-attr">checksums</span>: {},
-    <span class="hljs-attr">value</span>: {},
-  };
-  <span class="hljs-keyword">return</span> tableDefinition;
-}
-
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDirtyTables</span>(<span class="hljs-params">store: IDBStore, commit: ICommit</span>) </span>{
-  <span class="hljs-keyword">return</span> [...new <span class="hljs-built_in">Set</span>(commit.map(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.path[<span class="hljs-number">0</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>))];
-}
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRelatedTables</span>(<span class="hljs-params">
-  store: IDBStore,
-  query: ISelectQuery,
-  tableDef: ITableDefinition
-</span>) </span>{
-  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">string</span>&gt;([
-    query[<span class="hljs-number">1</span>],
-    ...Object.keys(query[<span class="hljs-number">2</span>].includes || []).reduce&lt;<span class="hljs-built_in">string</span>[]&gt;(
-      <span class="hljs-function">(<span class="hljs-params">state: <span class="hljs-built_in">string</span>[], includeName: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
-        <span class="hljs-keyword">const</span> relation = getRelationDefintion(store, tableDef, includeName);
-        <span class="hljs-keyword">if</span> (relation[<span class="hljs-number">0</span>] === R.MTM) {
-          <span class="hljs-keyword">return</span> [
-            ...state,
-            relation[<span class="hljs-number">2</span>].tableName,
-            relation[<span class="hljs-number">2</span>].through <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>,
-          ];
-        } <span class="hljs-keyword">else</span> {
-          <span class="hljs-keyword">return</span> state;
-        }
-      },
-      [] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>[]
-    ),
-  ]);
-}
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">observe</span>(<span class="hljs-params">
-  store: IDBStore,
-  query: ISelectQuery,
-  handler: <span class="hljs-built_in">Function</span>
-</span>) </span>{
-  <span class="hljs-keyword">const</span> id = shortid();
-  <span class="hljs-keyword">const</span> queryHash = checksum(query);
-  <span class="hljs-keyword">const</span> wid = id + <span class="hljs-string">&quot;/&quot;</span> + queryHash;
-  <span class="hljs-keyword">const</span> tableDef = getTableDefinition(store, query[<span class="hljs-number">1</span>]);
-  <span class="hljs-keyword">const</span> interestingTables = getRelatedTables(store, query, tableDef);
-  <span class="hljs-keyword">const</span> shradCusor = defWatchableCursor(store.db, getShradCursorPath(store.db));
-  shradCusor.addWatch(wid, <span class="hljs-function">(<span class="hljs-params">id, commit</span>) =&gt;</span> {
-    <span class="hljs-keyword">const</span> dirtyTables = getDirtyTables(store, commit || []);
-    <span class="hljs-keyword">const</span> isDirty = dirtyTables.some(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> interestingTables.has(el));
-    <span class="hljs-built_in">console</span>.debug(<span class="hljs-string">&quot;interestingTables&quot;</span>, interestingTables, dirtyTables, isDirty);
-    <span class="hljs-keyword">if</span> (isDirty) {
-      <span class="hljs-built_in">console</span>.debug(dirtyTables, interestingTables, isDirty);
-      handler();
-    }
-  });
-  addHandler(store, query, wid, handler);
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getInsert</span>(<span class="hljs-params">db: IDBStore, query: IInsertQuery</span>) </span>{
   <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> {
-    shradCusor.removeWatch(wid);
-    removeHandler(store, query, wid, handler);
+    <span class="hljs-keyword">const</span> tableName = query[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">const</span> rows = query[<span class="hljs-number">2</span>].map(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el);
+
+    rows.forEach(<span class="hljs-function">(<span class="hljs-params">row</span>) =&gt;</span> {
+      createRecord(db.db, tableName, {}, row.id, row);
+    });
   };
 }
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addHandler</span>(<span class="hljs-params">
-  store: IDBStore,
-  query: ISelectQuery,
-  wid: <span class="hljs-built_in">string</span>,
-  handler: <span class="hljs-built_in">Function</span>
-</span>) </span>{
-  <span class="hljs-keyword">const</span> queryHash = checksum(query);
-  <span class="hljs-keyword">let</span> exisitngDef = store.queries.get(queryHash);
-  <span class="hljs-keyword">let</span> handlers = store.queryHandlers.get(queryHash);
-  <span class="hljs-keyword">if</span> (!exisitngDef || !handlers) {
-    store.queries.set(wid, [query, queryHash, wid]);
-    handlers = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>([]);
-    store.queryHandlers.set(queryHash, handlers);
-  }
-  <span class="hljs-keyword">if</span> (!handlers) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NODEF&quot;</span>);
-  }
-  handlers.add(handler);
-}
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeHandler</span>(<span class="hljs-params">
-  store: IDBStore,
-  query: ISelectQuery,
-  wid: <span class="hljs-built_in">string</span>,
-  handler: <span class="hljs-built_in">Function</span>
-</span>) </span>{
-  <span class="hljs-keyword">const</span> exisitngDef = store.queries.get(wid);
-  <span class="hljs-keyword">if</span> (!exisitngDef) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NO_WATCH&quot;</span>);
-  }
-  <span class="hljs-keyword">const</span> [q, queryHash] = exisitngDef;
-  <span class="hljs-keyword">const</span> handlers = store.queryHandlers.get(queryHash);
-  <span class="hljs-keyword">if</span> (!exisitngDef || !handlers) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NODEF&quot;</span>);
-  }
-  handlers.delete(handler);
-}
 
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTableDefinition</span>(<span class="hljs-params">
-  db: IDBStore,
-  tableName: <span class="hljs-built_in">string</span>
-</span>): <span class="hljs-title">ITableDefinition</span> </span>{
-  <span class="hljs-keyword">const</span> table = db.schema.tables.find(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.name == tableName);
-  <span class="hljs-keyword">if</span> (!table) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;no_table &quot;</span> + tableName);
-  <span class="hljs-keyword">return</span> table;
-}
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDestroy</span>(<span class="hljs-params">db: IDBStore, query: IDestroyQuery</span>) </span>{}
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getUpdate</span>(<span class="hljs-params">db: IDBStore, query: IUpdateQuery</span>) </span>{}
 
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSelect</span>(<span class="hljs-params">db: IDBStore, query: ISelectQuery</span>) </span>{
   <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> {
@@ -526,6 +441,45 @@
     });
   };
 }
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compilePredicate</span>(<span class="hljs-params">
+  db: IDBStore,
+  query: ISelectQuery | IUpdateQuery | IDestroyQuery,
+  predicate: IPredicate = query[<span class="hljs-number">2</span>].predicate <span class="hljs-keyword">as</span> IPredicate
+</span>) </span>{
+  <span class="hljs-keyword">if</span> (!predicate) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NO_PREDICATE&quot;</span>);
+  }
+  <span class="hljs-keyword">const</span> <span class="hljs-keyword">type</span> = predicate[<span class="hljs-number">0</span>];
+  <span class="hljs-keyword">const</span> columnName = predicate[<span class="hljs-number">1</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;
+  <span class="hljs-keyword">const</span> value = predicate[<span class="hljs-number">2</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>;
+
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> === M.$eq) {
+    <span class="hljs-keyword">return</span> { [columnName]: { <span class="hljs-attr">$eq</span>: value } };
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> == M.$and) {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">$and</span>: value.map(<span class="hljs-function">(<span class="hljs-params">el: IPredicate</span>) =&gt;</span> compilePredicate(db, query, el)),
+    };
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> === M.$or) {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">$or</span>: value.map(<span class="hljs-function">(<span class="hljs-params">el: IPredicate</span>) =&gt;</span> compilePredicate(db, query, el)),
+    };
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> === M.$neq) {
+    <span class="hljs-keyword">return</span> { [columnName]: { <span class="hljs-attr">$neq</span>: value } };
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;INVALID PREDICATE = &quot;</span> + <span class="hljs-keyword">type</span>);
+  }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTableDefinition</span>(<span class="hljs-params">
+  db: IDBStore,
+  tableName: <span class="hljs-built_in">string</span>
+</span>): <span class="hljs-title">ITableDefinition</span> </span>{
+  <span class="hljs-keyword">const</span> table = db.schema.tables.find(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.name == tableName);
+  <span class="hljs-keyword">if</span> (!table) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;no_table &quot;</span> + tableName);
+  <span class="hljs-keyword">return</span> table;
+}
+
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRelationDefintion</span>(<span class="hljs-params">
   db: IDBStore,
   tableDef: ITableDefinition,
@@ -587,48 +541,96 @@
   <span class="hljs-keyword">return</span> [];
 }
 
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getInsert</span>(<span class="hljs-params">db: IDBStore, query: IInsertQuery</span>) </span>{
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">observe</span>(<span class="hljs-params">
+  store: IDBStore,
+  query: ISelectQuery,
+  handler: <span class="hljs-built_in">Function</span>
+</span>) </span>{
+  <span class="hljs-keyword">const</span> id = shortid();
+  <span class="hljs-keyword">const</span> queryHash = checksum(query);
+  <span class="hljs-keyword">const</span> wid = id + <span class="hljs-string">&quot;/&quot;</span> + queryHash;
+  <span class="hljs-keyword">const</span> tableDef = getTableDefinition(store, query[<span class="hljs-number">1</span>]);
+  <span class="hljs-keyword">const</span> interestingTables = getRelatedTables(store, query, tableDef);
+  <span class="hljs-keyword">const</span> shradCusor = defWatchableCursor(store.db, getShradCursorPath(store.db));
+  shradCusor.addWatch(wid, <span class="hljs-function">(<span class="hljs-params">id, commit</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> dirtyTables = getDirtyTables(store, commit || []);
+    <span class="hljs-keyword">const</span> isDirty = dirtyTables.some(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> interestingTables.has(el));
+    <span class="hljs-built_in">console</span>.debug(<span class="hljs-string">&quot;interestingTables&quot;</span>, interestingTables, dirtyTables, isDirty);
+    <span class="hljs-keyword">if</span> (isDirty) {
+      <span class="hljs-built_in">console</span>.debug(dirtyTables, interestingTables, isDirty);
+      handler();
+    }
+  });
+  addHandler(store, query, wid, handler);
   <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> {
-    <span class="hljs-keyword">const</span> tableName = query[<span class="hljs-number">1</span>];
-    <span class="hljs-keyword">const</span> rows = query[<span class="hljs-number">2</span>].map(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el);
-
-    rows.forEach(<span class="hljs-function">(<span class="hljs-params">row</span>) =&gt;</span> {
-      createRecord(db.db, tableName, {}, row.id, row);
-    });
+    shradCusor.removeWatch(wid);
+    removeHandler(store, query, wid, handler);
   };
 }
 
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compilePredicate</span>(<span class="hljs-params">
-  db: IDBStore,
-  query: ISelectQuery | IUpdateQuery | IDestroyQuery,
-  predicate: IPredicate = query[<span class="hljs-number">2</span>].predicate <span class="hljs-keyword">as</span> IPredicate
-</span>) </span>{
-  <span class="hljs-keyword">if</span> (!predicate) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NO_PREDICATE&quot;</span>);
-  }
-  <span class="hljs-keyword">const</span> <span class="hljs-keyword">type</span> = predicate[<span class="hljs-number">0</span>];
-  <span class="hljs-keyword">const</span> columnName = predicate[<span class="hljs-number">1</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;
-  <span class="hljs-keyword">const</span> value = predicate[<span class="hljs-number">2</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>;
-
-  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> === M.$eq) {
-    <span class="hljs-keyword">return</span> { [columnName]: { <span class="hljs-attr">$eq</span>: value } };
-  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> == M.$and) {
-    <span class="hljs-keyword">return</span> {
-      <span class="hljs-attr">$and</span>: value.map(<span class="hljs-function">(<span class="hljs-params">el: IPredicate</span>) =&gt;</span> compilePredicate(db, query, el)),
-    };
-  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> === M.$or) {
-    <span class="hljs-keyword">return</span> {
-      <span class="hljs-attr">$or</span>: value.map(<span class="hljs-function">(<span class="hljs-params">el: IPredicate</span>) =&gt;</span> compilePredicate(db, query, el)),
-    };
-  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">type</span> === M.$neq) {
-    <span class="hljs-keyword">return</span> { [columnName]: { <span class="hljs-attr">$neq</span>: value } };
-  } <span class="hljs-keyword">else</span> {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;INVALID PREDICATE = &quot;</span> + <span class="hljs-keyword">type</span>);
-  }
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDirtyTables</span>(<span class="hljs-params">store: IDBStore, commit: ICommit</span>) </span>{
+  <span class="hljs-keyword">return</span> [...new <span class="hljs-built_in">Set</span>(commit.map(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.path[<span class="hljs-number">0</span>] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>))];
 }
-
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDestroy</span>(<span class="hljs-params">db: IDBStore, query: IDestroyQuery</span>) </span>{}
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getUpdate</span>(<span class="hljs-params">db: IDBStore, query: IUpdateQuery</span>) </span>{}</pre></div></div>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRelatedTables</span>(<span class="hljs-params">
+  store: IDBStore,
+  query: ISelectQuery,
+  tableDef: ITableDefinition
+</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">string</span>&gt;([
+    query[<span class="hljs-number">1</span>],
+    ...Object.keys(query[<span class="hljs-number">2</span>].includes || []).reduce&lt;<span class="hljs-built_in">string</span>[]&gt;(
+      <span class="hljs-function">(<span class="hljs-params">state: <span class="hljs-built_in">string</span>[], includeName: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> relation = getRelationDefintion(store, tableDef, includeName);
+        <span class="hljs-keyword">if</span> (relation[<span class="hljs-number">0</span>] === R.MTM) {
+          <span class="hljs-keyword">return</span> [
+            ...state,
+            relation[<span class="hljs-number">2</span>].tableName,
+            relation[<span class="hljs-number">2</span>].through <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>,
+          ];
+        } <span class="hljs-keyword">else</span> {
+          <span class="hljs-keyword">return</span> state;
+        }
+      },
+      [] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>[]
+    ),
+  ]);
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addHandler</span>(<span class="hljs-params">
+  store: IDBStore,
+  query: ISelectQuery,
+  wid: <span class="hljs-built_in">string</span>,
+  handler: <span class="hljs-built_in">Function</span>
+</span>) </span>{
+  <span class="hljs-keyword">const</span> queryHash = checksum(query);
+  <span class="hljs-keyword">let</span> exisitngDef = store.queries.get(queryHash);
+  <span class="hljs-keyword">let</span> handlers = store.queryHandlers.get(queryHash);
+  <span class="hljs-keyword">if</span> (!exisitngDef || !handlers) {
+    store.queries.set(wid, [query, queryHash, wid]);
+    handlers = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>([]);
+    store.queryHandlers.set(queryHash, handlers);
+  }
+  <span class="hljs-keyword">if</span> (!handlers) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NODEF&quot;</span>);
+  }
+  handlers.add(handler);
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">removeHandler</span>(<span class="hljs-params">
+  store: IDBStore,
+  query: ISelectQuery,
+  wid: <span class="hljs-built_in">string</span>,
+  handler: <span class="hljs-built_in">Function</span>
+</span>) </span>{
+  <span class="hljs-keyword">const</span> exisitngDef = store.queries.get(wid);
+  <span class="hljs-keyword">if</span> (!exisitngDef) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NO_WATCH&quot;</span>);
+  }
+  <span class="hljs-keyword">const</span> [q, queryHash] = exisitngDef;
+  <span class="hljs-keyword">const</span> handlers = store.queryHandlers.get(queryHash);
+  <span class="hljs-keyword">if</span> (!exisitngDef || !handlers) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NODEF&quot;</span>);
+  }
+  handlers.delete(handler);
+}</pre></div></div>
             
         </li>
         
