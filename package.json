@@ -1,6 +1,6 @@
 {
   "name": "@gratico/qbase",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "author": "Abhishiv Saxena<abhishiv@gmail.com>",
   "description": "Superperformant in-memory data store with support for MTM/HM/BT/H1 relationships and relay/apollo like query watching - written to be an functional alternative to @apollo/client. PRs welcomed for adding support for JSONSchema.",
   "license": "UNLICENSED",

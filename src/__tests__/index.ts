@@ -96,7 +96,7 @@ describe("QBase", () => {
     ]);
     const insertMVJunctionQuery = getInsert(db, [
       Q.INSERT,
-      "Viewports",
+      "MasterViewportJunction",
       [{ id: "master1.viewport1", masterId: "", viewportId: "viewport1" }],
     ]);
     insertMQuery();

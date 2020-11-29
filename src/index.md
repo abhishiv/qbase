@@ -4,7 +4,7 @@
 @gratico/qbase
 =====
 
-Simple active record like ORM for browser with MongoDB styled queries and watchable queries.
+Simple light and super-performant active record like ORM for browser with MongoDB styled queries and watchable queries.
 
 Install and use
 ---------------
