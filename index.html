@@ -197,9 +197,9 @@
       <span class="hljs-attr">primaryKey</span>: [<span class="hljs-string">&quot;id&quot;</span>],
       <span class="hljs-attr">relations</span>: [
         [
-          R.MTM,
-          <span class="hljs-string">&quot;viewports&quot;</span>,
-          {
+          R.MTM, <span class="hljs-comment">// relation type</span>
+          <span class="hljs-string">&quot;viewports&quot;</span>, <span class="hljs-comment">// relation name</span>
+          { <span class="hljs-comment">// relation options</span>
             <span class="hljs-attr">tableName</span>: <span class="hljs-string">&quot;Viewports&quot;</span>,
             <span class="hljs-attr">remoteKey</span>: <span class="hljs-string">&quot;viewportId&quot;</span>,
             <span class="hljs-attr">localKey</span>: <span class="hljs-string">&quot;masterId&quot;</span>,
@@ -409,8 +409,16 @@
   };
 }
 
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDestroy</span>(<span class="hljs-params">db: IDBStore, query: IDestroyQuery</span>) </span>{}
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getUpdate</span>(<span class="hljs-params">db: IDBStore, query: IUpdateQuery</span>) </span>{}
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getDestroy</span>(<span class="hljs-params">db: IDBStore, query: IDestroyQuery</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> tableName = query[<span class="hljs-number">1</span>];
+  };
+}
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getUpdate</span>(<span class="hljs-params">db: IDBStore, query: IUpdateQuery</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> {
+    <span class="hljs-keyword">const</span> tableName = query[<span class="hljs-number">1</span>];
+  };
+}
 
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSelect</span>(<span class="hljs-params">db: IDBStore, query: ISelectQuery</span>) </span>{
   <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> {
@@ -505,28 +513,6 @@
   }
 }
 
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTableDefinition</span>(<span class="hljs-params">
-  db: IDBStore,
-  tableName: <span class="hljs-built_in">string</span>
-</span>): <span class="hljs-title">ITableDefinition</span> </span>{
-  <span class="hljs-keyword">const</span> table = db.schema.tables.find(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.name == tableName);
-  <span class="hljs-keyword">if</span> (!table) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;no_table &quot;</span> + tableName);
-  <span class="hljs-keyword">return</span> table;
-}
-
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRelationDefintion</span>(<span class="hljs-params">
-  db: IDBStore,
-  tableDef: ITableDefinition,
-  includeName: <span class="hljs-built_in">string</span>
-</span>) </span>{
-  <span class="hljs-keyword">const</span> includeDef = (tableDef.relations || []).find(
-    <span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el[<span class="hljs-number">1</span>] === includeName
-  );
-  <span class="hljs-keyword">if</span> (!includeDef) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NO_RELATION = &quot;</span> + includeName);
-  }
-  <span class="hljs-keyword">return</span> includeDef;
-}
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compileIncludeQuery</span>&lt;<span class="hljs-title">T</span> = <span class="hljs-title">any</span>&gt;(<span class="hljs-params">
   db: IDBStore,
   query: ISelectQuery,
@@ -573,6 +559,29 @@
     });
   }
   <span class="hljs-keyword">return</span> [];
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTableDefinition</span>(<span class="hljs-params">
+  db: IDBStore,
+  tableName: <span class="hljs-built_in">string</span>
+</span>): <span class="hljs-title">ITableDefinition</span> </span>{
+  <span class="hljs-keyword">const</span> table = db.schema.tables.find(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.name == tableName);
+  <span class="hljs-keyword">if</span> (!table) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;no_table &quot;</span> + tableName);
+  <span class="hljs-keyword">return</span> table;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRelationDefintion</span>(<span class="hljs-params">
+  db: IDBStore,
+  tableDef: ITableDefinition,
+  includeName: <span class="hljs-built_in">string</span>
+</span>) </span>{
+  <span class="hljs-keyword">const</span> includeDef = (tableDef.relations || []).find(
+    <span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el[<span class="hljs-number">1</span>] === includeName
+  );
+  <span class="hljs-keyword">if</span> (!includeDef) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NO_RELATION = &quot;</span> + includeName);
+  }
+  <span class="hljs-keyword">return</span> includeDef;
 }
 
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">observe</span>(<span class="hljs-params">

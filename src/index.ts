@@ -78,9 +78,9 @@ export interface IDBStore {
 //           primaryKey: ["id"],
 //           relations: [
 //             [
-//               R.MTM,
-//               "viewports",
-//               {
+//               R.MTM, // relation type
+//               "viewports", // relation name
+//               { // relation options
 //                 tableName: "Viewports",
 //                 remoteKey: "viewportId",
 //                 localKey: "masterId",
@@ -167,7 +167,7 @@ export enum M {
   $and,
   $or,
   $eq,
-  $neq,
+  $neq = "$neq",
 }
 export type IAndQuery = [M.$and, IPredicate[]];
 export type IOrQuery = [M.$or, IPredicate[]];
@@ -219,8 +219,16 @@ export function getInsert(db: IDBStore, query: IInsertQuery) {
   };
 }
 
-export function getDestroy(db: IDBStore, query: IDestroyQuery) {}
-export function getUpdate(db: IDBStore, query: IUpdateQuery) {}
+export function getDestroy(db: IDBStore, query: IDestroyQuery) {
+  return () => {
+    const tableName = query[1];
+  };
+}
+export function getUpdate(db: IDBStore, query: IUpdateQuery) {
+  return () => {
+    const tableName = query[1];
+  };
+}
 
 export function getSelect(db: IDBStore, query: ISelectQuery) {
   return () => {
@@ -279,7 +287,7 @@ export function compilePredicate(
   predicate: IPredicate = query[2].predicate as IPredicate
 ) {
   if (!predicate) {
-    throw new Error("NO_PREDICATE");
+    return {};
   }
   const type = predicate[0];
   const columnName = predicate[1] as string;
@@ -296,34 +304,12 @@ export function compilePredicate(
       $or: value.map((el: IPredicate) => compilePredicate(db, query, el)),
     };
   } else if (type === M.$neq) {
-    return { [columnName]: { $neq: value } };
+    return { [columnName]: { $ne: value } };
   } else {
     throw new Error("INVALID PREDICATE = " + type);
   }
 }
 
-export function getTableDefinition(
-  db: IDBStore,
-  tableName: string
-): ITableDefinition {
-  const table = db.schema.tables.find((el) => el.name == tableName);
-  if (!table) throw new Error("no_table " + tableName);
-  return table;
-}
-
-export function getRelationDefintion(
-  db: IDBStore,
-  tableDef: ITableDefinition,
-  includeName: string
-) {
-  const includeDef = (tableDef.relations || []).find(
-    (el) => el[1] === includeName
-  );
-  if (!includeDef) {
-    throw new Error("NO_RELATION = " + includeName);
-  }
-  return includeDef;
-}
 export function compileIncludeQuery<T = any>(
   db: IDBStore,
   query: ISelectQuery,
@@ -334,7 +320,10 @@ export function compileIncludeQuery<T = any>(
   const relationDefintion = getRelationDefintion(db, tableDef, includeName);
   if (relationDefintion[0] == R.MTM) {
     const { tableName, through, remoteKey, localKey } = relationDefintion[2];
-    const throughRecords = getRecords(db.db, through);
+    const throughRecords = getRecords(db.db, through) || {
+      value: {},
+      checksums: {},
+    };
     const throughQuery = sift({
       [localKey]: { $in: tableRecords.map((el) => el.id) },
     });
@@ -370,6 +359,29 @@ export function compileIncludeQuery<T = any>(
     });
   }
   return [];
+}
+
+export function getTableDefinition(
+  db: IDBStore,
+  tableName: string
+): ITableDefinition {
+  const table = db.schema.tables.find((el) => el.name == tableName);
+  if (!table) throw new Error("no_table " + tableName);
+  return table;
+}
+
+export function getRelationDefintion(
+  db: IDBStore,
+  tableDef: ITableDefinition,
+  includeName: string
+) {
+  const includeDef = (tableDef.relations || []).find(
+    (el) => el[1] === includeName
+  );
+  if (!includeDef) {
+    throw new Error("NO_RELATION = " + includeName);
+  }
+  return includeDef;
 }
 
 export function observe(

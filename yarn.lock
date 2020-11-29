@@ -279,13 +279,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@gratico/atom@*":
-  version "0.0.3"
-  resolved "https://registry.npmjs.org/@gratico/atom/-/atom-0.0.3.tgz#ecf8abb08e615a02725d5ca730521be8eca0661a"
-  integrity sha512-uqeAMj1dJi0LbuEa/83kMV2g+LqEkHBN0L06RnGMPmrnPKqgjlGXKZqONkJDGp2yyoxKUK/ZX/1AjtC1s8lUUg==
-  dependencies:
-    immer "^8.0.0"
-    lodash.get "^4.4.2"
+"@gratico/atom@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/@gratico/atom/-/atom-0.1.1.tgz#10e56ccbbe1d0062f85e6b266248677f7d35297c"
+  integrity sha512-i9UHcmfv9jWLIBRONt7YJedPMLQDy7p+plYHwFmCZr9XaN0E27mArLkvHGDxnYGh9SRdLgpAeuNewvSg5QjcbA==
 
 "@gratico/checksum@*":
   version "0.777.9"
@@ -1656,11 +1653,6 @@ iconv-lite@0.4.24:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-immer@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.npmjs.org/immer/-/immer-8.0.0.tgz#08763549ba9dd7d5e2eb4bec504a8315bd9440c2"
-  integrity sha512-jm87NNBAIG4fHwouilCHIecFXp5rMGkiFrAuhVO685UnMAlOneEAnOyzPt8OnP47TC11q/E7vpzZe0WvwepFTg==
-
 import-local@^3.0.2:
   version "3.0.2"
   resolved "https://registry.npmjs.org/import-local/-/import-local-3.0.2.tgz#a8cfd0431d1de4a2199703d003e3e62364fa6db6"
@@ -2441,11 +2433,6 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
-lodash.get@^4.4.2:
-  version "4.4.2"
-  resolved "https://registry.npmjs.org/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
-  integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
-
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.npmjs.org/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -2651,6 +2638,11 @@ normalize-path@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
+
+normalizr@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.npmjs.org/normalizr/-/normalizr-3.6.1.tgz#d367ab840e031ff382141b8d81ce279292ff69fe"
+  integrity sha512-8iEmqXmPtll8PwbEFrbPoDxVw7MKnNvt3PZzR2Xvq9nggEEOgBlNICPXYzyZ4w4AkHUzCU998mdatER3n2VaMA==
 
 npm-run-path@^2.0.0:
   version "2.0.2"
@@ -3534,6 +3526,11 @@ typedoc@^0.19.2:
     semver "^7.3.2"
     shelljs "^0.8.4"
     typedoc-default-themes "^0.11.4"
+
+typescript@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-4.1.2.tgz#6369ef22516fe5e10304aae5a5c4862db55380e9"
+  integrity sha512-thGloWsGH3SOxv1SoY7QojKi0tc+8FnOmiarEGMbd/lar7QOEd3hvlx3Fp5y6FlDUGl9L+pd4n2e+oToGMmhRQ==
 
 uglify-js@^3.1.4:
   version "3.12.0"

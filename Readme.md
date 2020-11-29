@@ -96,9 +96,9 @@ List of table describing their column and realtions
           primaryKey: ["id"],
           relations: [
             [
-              R.MTM,
-              "viewports",
-              {
+              R.MTM, // relation type
+              "viewports", // relation name
+              { // relation options
                 tableName: "Viewports",
                 remoteKey: "viewportId",
                 localKey: "masterId",
@@ -254,8 +254,16 @@ export function getInsert(db: IDBStore, query: IInsertQuery) {
   };
 }
 
-export function getDestroy(db: IDBStore, query: IDestroyQuery) {}
-export function getUpdate(db: IDBStore, query: IUpdateQuery) {}
+export function getDestroy(db: IDBStore, query: IDestroyQuery) {
+  return () => {
+    const tableName = query[1];
+  };
+}
+export function getUpdate(db: IDBStore, query: IUpdateQuery) {
+  return () => {
+    const tableName = query[1];
+  };
+}
 
 export function getSelect(db: IDBStore, query: ISelectQuery) {
   return () => {
@@ -341,28 +349,6 @@ export function compilePredicate(
   }
 }
 
-export function getTableDefinition(
-  db: IDBStore,
-  tableName: string
-): ITableDefinition {
-  const table = db.schema.tables.find((el) => el.name == tableName);
-  if (!table) throw new Error("no_table " + tableName);
-  return table;
-}
-
-export function getRelationDefintion(
-  db: IDBStore,
-  tableDef: ITableDefinition,
-  includeName: string
-) {
-  const includeDef = (tableDef.relations || []).find(
-    (el) => el[1] === includeName
-  );
-  if (!includeDef) {
-    throw new Error("NO_RELATION = " + includeName);
-  }
-  return includeDef;
-}
 export function compileIncludeQuery<T = any>(
   db: IDBStore,
   query: ISelectQuery,
@@ -409,6 +395,29 @@ export function compileIncludeQuery<T = any>(
     });
   }
   return [];
+}
+
+export function getTableDefinition(
+  db: IDBStore,
+  tableName: string
+): ITableDefinition {
+  const table = db.schema.tables.find((el) => el.name == tableName);
+  if (!table) throw new Error("no_table " + tableName);
+  return table;
+}
+
+export function getRelationDefintion(
+  db: IDBStore,
+  tableDef: ITableDefinition,
+  includeName: string
+) {
+  const includeDef = (tableDef.relations || []).find(
+    (el) => el[1] === includeName
+  );
+  if (!includeDef) {
+    throw new Error("NO_RELATION = " + includeName);
+  }
+  return includeDef;
 }
 
 export function observe(

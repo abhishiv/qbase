@@ -1,6 +1,7 @@
 .PHONY: project
 project:
 	make build
+	make doc
 
 .PHONY: install
 install:
@@ -17,7 +18,8 @@ build:
 
 .PHONY: tsc
 tsc:
-	./node_modules/.bin/tsc --resolveJsonModule -p ./tsconfig.json
+	./node_modules/.bin/tsc --resolveJsonModule -p ./tsconfig.json --outDir ./dist/esm
+	./node_modules/.bin/tsc --resolveJsonModule -p ./tsconfig.json --module commonjs --outDir ./dist/cjs
 
 .PHONY: doc-file
 doc-file:
@@ -31,6 +33,6 @@ doc:
 	env SRC_FILE=./src/relational.ts make doc-file
 	mv ./src/index.md ./Readme.md
 	mv ./src/index.html ./index.html
-	./node_modules/.bin/typedoc --theme ../../tools/typedoc/default  --out ./docs/types   --includeDeclarations --exclude "**/node_modules/**/*" --inputFiles ./src
+	#./node_modules/.bin/typedoc --theme ../../tools/typedoc/default  --out ./docs/types   --includeDeclarations --exclude "**/node_modules/**/*" --inputFiles ./src
 
 
