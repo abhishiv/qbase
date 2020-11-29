@@ -9,16 +9,17 @@
 // To use run `npm install -g @gratico/qbase`
 //
 
+// relational helpers
+// ---------------------------
+// please check [relational module](src/relational.html)
 import {
   DB,
   defDb as createDb,
   createRecord,
-  updateRecord,
-  modifyRecord,
-  deleteRecord,
   getRecords,
   getShradCursorPath,
 } from "./relational";
+// we also expose watchQuery inteface using [@gratico/atom](https://abhishiv.github.io/atom/)
 import { defWatchableCursor, ICommit } from "@gratico/atom";
 import { checksum } from "@gratico/checksum";
 import sift from "sift";

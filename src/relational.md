@@ -186,10 +186,10 @@ export function deleteRecord<T>(
 
 ```
 
-workhorse function
+modifyRecord
 ---------------------------
 
-responsible for actually modify underlying storage while calcullating appropriate checksums(including in case of delete)
+workhorse function responsible for actually modify underlying storage while calcullating appropriate checksums(including in case of delete)
 
 ```
 export function modifyRecord<T>(
