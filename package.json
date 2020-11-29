@@ -29,7 +29,6 @@
   "dependencies": {
     "@gratico/atom": "^0.1.1",
     "@gratico/checksum": "*",
-    "normalizr": "^3.6.1",
     "shortid": "^2.2.15",
     "sift": "^13.1.10"
   },
