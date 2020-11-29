@@ -16,6 +16,8 @@ import {
   IPredicate,
   IUpdateQuery,
   R,
+  M,
+  Q,
 } from "./types";
 
 export function getInsert(db: IQBase, query: IInsertQuery) {

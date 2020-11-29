@@ -28,12 +28,14 @@ doc-file:
 
 .PHONY: doc
 doc:
-	env SRC_FILE=./src/index.ts make doc-file
-	env SRC_FILE=./src/relational.ts make doc-file
-	env SRC_FILE=./src/utils.ts make doc-file
-	env SRC_FILE=./src/schema.ts make doc-file
-	env SRC_FILE=./src/types.ts make doc-file
-	env SRC_FILE=./src/watch.ts make doc-file
-	./node_modules/.bin/typedoc --theme ./node_modules/@gratico/docs-site/src/themes/typedoc/default  --out ./src/docs   --includeDeclarations --exclude "**/node_modules/**/*" --inputFiles ./src
+	mkdir -p docs
+	cp -r src docs
+	env SRC_FILE=./docs/index.ts make doc-file
+	env SRC_FILE=./docs/relational.ts make doc-file
+	env SRC_FILE=./docs/utils.ts make doc-file
+	env SRC_FILE=./docs/schema.ts make doc-file
+	env SRC_FILE=./docs/types.ts make doc-file
+	env SRC_FILE=./docs/watch.ts make doc-file
+	./node_modules/.bin/typedoc --theme ./node_modules/@gratico/docs-site/src/themes/typedoc/default  --out ./docs/types   --includeDeclarations --exclude "**/node_modules/**/*" --inputFiles ./src
 
 
