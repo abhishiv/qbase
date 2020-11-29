@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="shortcut icon" href="/_/static/customhash/hub/images/favicon.png" />
-	<title>IUpdateCiterion | @gratico/qbase</title>
+	<title>IColumnDefinition | @gratico/qbase</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link
@@ -336,10 +336,10 @@ footer {
 					<a href="../modules/_types_.html">&quot;types&quot;</a>
 				</li>
 				<li>
-					<a href="_types_.iupdateciterion.html">IUpdateCiterion</a>
+					<a href="_types_.icolumndefinition.html">IColumnDefinition</a>
 				</li>
 				<li>
-				Interface IUpdateCiterion                </li>
+				Interface IColumnDefinition                </li>
 			</ul>
 		</div>
 	</div>
@@ -398,9 +398,27 @@ footer {
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.hasoneoptions.html" class="tsd-kind-icon">Has<wbr>One<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.icolumndefinition.html" class="tsd-kind-icon">IColumn<wbr>Definition</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.icolumndefinition.html#foreignkey" class="tsd-kind-icon">foreign<wbr>Key</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.icolumndefinition.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.icolumndefinition.html#nullable" class="tsd-kind-icon">nullable</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.icolumndefinition.html#type" class="tsd-kind-icon">type</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.idestroyciterion.html" class="tsd-kind-icon">IDestroy<wbr>Citerion</a>
 					</li>
@@ -422,21 +440,9 @@ footer {
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.itabledefinition.html" class="tsd-kind-icon">ITable<wbr>Definition</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-module">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.iupdateciterion.html" class="tsd-kind-icon">IUpdate<wbr>Citerion</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.iupdateciterion.html#predicate" class="tsd-kind-icon">predicate</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.iupdateciterion.html#values" class="tsd-kind-icon">values</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.manytomanyoptions.html" class="tsd-kind-icon">Many<wbr>ToMany<wbr>Options</a>
 					</li>
@@ -487,7 +493,7 @@ footer {
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IUpdateCiterion</span>
+						<span class="target">IColumnDefinition</span>
 					</li>
 				</ul>
 			</section>
@@ -498,8 +504,10 @@ footer {
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.iupdateciterion.html#predicate" class="tsd-kind-icon">predicate</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.iupdateciterion.html#values" class="tsd-kind-icon">values</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.icolumndefinition.html#foreignkey" class="tsd-kind-icon">foreign<wbr>Key</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.icolumndefinition.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.icolumndefinition.html#nullable" class="tsd-kind-icon">nullable</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.icolumndefinition.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -508,22 +516,42 @@ footer {
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="predicate" class="tsd-anchor"></a>
-					<h3>predicate</h3>
-					<div class="tsd-signature tsd-kind-icon">predicate<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_.html#ipredicate" class="tsd-signature-type">IPredicate</a></div>
+					<a name="foreignkey" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> foreign<wbr>Key</h3>
+					<div class="tsd-signature tsd-kind-icon">foreign<wbr>Key<span class="tsd-signature-symbol">:</span> <a href="_types_.iforeignkeydefinition.html" class="tsd-signature-type">IForeignKeyDefinition</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L113">types.ts:113</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/f1f91c7/src/types.ts#L26">types.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="values" class="tsd-anchor"></a>
-					<h3>values</h3>
-					<div class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L112">types.ts:112</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/f1f91c7/src/types.ts#L23">types.ts:23</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="nullable" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> nullable</h3>
+					<div class="tsd-signature tsd-kind-icon">nullable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/f1f91c7/src/types.ts#L25">types.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"NUMBER"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"INTEGER"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"STRING"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"BOOLEAN"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"DATE_TIME"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"OBJECT"</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/f1f91c7/src/types.ts#L24">types.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>

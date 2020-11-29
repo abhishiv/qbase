@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="shortcut icon" href="/_/static/customhash/hub/images/favicon.png" />
-	<title>ManyToManyOptions | @gratico/qbase</title>
+	<title>HasManyOptions | @gratico/qbase</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link
@@ -336,10 +336,10 @@ footer {
 					<a href="../modules/_types_.html">&quot;types&quot;</a>
 				</li>
 				<li>
-					<a href="_types_.manytomanyoptions.html">ManyToManyOptions</a>
+					<a href="_types_.hasmanyoptions.html">HasManyOptions</a>
 				</li>
 				<li>
-				Interface ManyToManyOptions                </li>
+				Interface HasManyOptions                </li>
 			</ul>
 		</div>
 	</div>
@@ -392,9 +392,21 @@ footer {
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.belongsoptions.html" class="tsd-kind-icon">Belongs<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.hasmanyoptions.html" class="tsd-kind-icon">Has<wbr>Many<wbr>Options</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.hasmanyoptions.html#foreignkey" class="tsd-kind-icon">foreign<wbr>Key</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_types_.hasmanyoptions.html#tablename" class="tsd-kind-icon">table<wbr>Name</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.hasoneoptions.html" class="tsd-kind-icon">Has<wbr>One<wbr>Options</a>
 					</li>
@@ -425,27 +437,9 @@ footer {
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.iupdateciterion.html" class="tsd-kind-icon">IUpdate<wbr>Citerion</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-module">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.manytomanyoptions.html" class="tsd-kind-icon">Many<wbr>ToMany<wbr>Options</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.manytomanyoptions.html#localkey" class="tsd-kind-icon">local<wbr>Key</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.manytomanyoptions.html#remotekey" class="tsd-kind-icon">remote<wbr>Key</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.manytomanyoptions.html#tablename" class="tsd-kind-icon">table<wbr>Name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.manytomanyoptions.html#through" class="tsd-kind-icon">through</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="../modules/_types_.html#iandquery" class="tsd-kind-icon">IAnd<wbr>Query</a>
 					</li>
@@ -493,7 +487,7 @@ footer {
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ManyToManyOptions</span>
+						<span class="target">HasManyOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -504,10 +498,8 @@ footer {
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.manytomanyoptions.html#localkey" class="tsd-kind-icon">local<wbr>Key</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.manytomanyoptions.html#remotekey" class="tsd-kind-icon">remote<wbr>Key</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.manytomanyoptions.html#tablename" class="tsd-kind-icon">table<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.manytomanyoptions.html#through" class="tsd-kind-icon">through</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.hasmanyoptions.html#foreignkey" class="tsd-kind-icon">foreign<wbr>Key</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.hasmanyoptions.html#tablename" class="tsd-kind-icon">table<wbr>Name</a></li>
 							</ul>
 						</section>
 					</div>
@@ -516,22 +508,12 @@ footer {
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="localkey" class="tsd-anchor"></a>
-					<h3>local<wbr>Key</h3>
-					<div class="tsd-signature tsd-kind-icon">local<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="foreignkey" class="tsd-anchor"></a>
+					<h3>foreign<wbr>Key</h3>
+					<div class="tsd-signature tsd-kind-icon">foreign<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L59">types.ts:59</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="remotekey" class="tsd-anchor"></a>
-					<h3>remote<wbr>Key</h3>
-					<div class="tsd-signature tsd-kind-icon">remote<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L58">types.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/f1f91c7/src/types.ts#L46">types.ts:46</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -541,17 +523,7 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">table<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L60">types.ts:60</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="through" class="tsd-anchor"></a>
-					<h3>through</h3>
-					<div class="tsd-signature tsd-kind-icon">through<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L61">types.ts:61</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/f1f91c7/src/types.ts#L47">types.ts:47</a></li>
 						</ul>
 					</aside>
 				</section>

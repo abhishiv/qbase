@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="shortcut icon" href="/_/static/customhash/hub/images/favicon.png" />
-	<title>IQBase | @gratico/qbase</title>
+	<title>ISchemaDefinition | @gratico/qbase</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link
@@ -336,10 +336,10 @@ footer {
 					<a href="../modules/_types_.html">&quot;types&quot;</a>
 				</li>
 				<li>
-					<a href="_types_.iqbase.html">IQBase</a>
+					<a href="_types_.ischemadefinition.html">ISchemaDefinition</a>
 				</li>
 				<li>
-				Interface IQBase                </li>
+				Interface ISchemaDefinition                </li>
 			</ul>
 		</div>
 	</div>
@@ -410,36 +410,24 @@ footer {
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.iindex.html" class="tsd-kind-icon">IIndex</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_types_.iqbase.html" class="tsd-kind-icon">IQBase</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_types_.iqbase.html" class="tsd-kind-icon">IQBase</a>
+						<a href="_types_.ischemadefinition.html" class="tsd-kind-icon">ISchema<wbr>Definition</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.iqbase.html#compiledschema" class="tsd-kind-icon">compiled<wbr>Schema</a>
+								<a href="_types_.ischemadefinition.html#name" class="tsd-kind-icon">name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.iqbase.html#db" class="tsd-kind-icon">db</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.iqbase.html#observe" class="tsd-kind-icon">observe</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.iqbase.html#queries" class="tsd-kind-icon">queries</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.iqbase.html#queryhandlers" class="tsd-kind-icon">query<wbr>Handlers</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.iqbase.html#schema" class="tsd-kind-icon">schema</a>
+								<a href="_types_.ischemadefinition.html#tables" class="tsd-kind-icon">tables</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_types_.ischemadefinition.html" class="tsd-kind-icon">ISchema<wbr>Definition</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="_types_.iselectcriterion.html" class="tsd-kind-icon">ISelect<wbr>Criterion</a>
 					</li>
@@ -499,7 +487,7 @@ footer {
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IQBase</span>
+						<span class="target">ISchemaDefinition</span>
 					</li>
 				</ul>
 			</section>
@@ -510,12 +498,8 @@ footer {
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.iqbase.html#compiledschema" class="tsd-kind-icon">compiled<wbr>Schema</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.iqbase.html#db" class="tsd-kind-icon">db</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.iqbase.html#observe" class="tsd-kind-icon">observe</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.iqbase.html#queries" class="tsd-kind-icon">queries</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.iqbase.html#queryhandlers" class="tsd-kind-icon">query<wbr>Handlers</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.iqbase.html#schema" class="tsd-kind-icon">schema</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.ischemadefinition.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.ischemadefinition.html#tables" class="tsd-kind-icon">tables</a></li>
 							</ul>
 						</section>
 					</div>
@@ -524,62 +508,22 @@ footer {
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="compiledschema" class="tsd-anchor"></a>
-					<h3>compiled<wbr>Schema</h3>
-					<div class="tsd-signature tsd-kind-icon">compiled<wbr>Schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L4">types.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/f1f91c7/src/types.ts#L12">types.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="db" class="tsd-anchor"></a>
-					<h3>db</h3>
-					<div class="tsd-signature tsd-kind-icon">db<span class="tsd-signature-symbol">:</span> <a href="../modules/_relational_.html#db" class="tsd-signature-type">DB</a></div>
+					<a name="tables" class="tsd-anchor"></a>
+					<h3>tables</h3>
+					<div class="tsd-signature tsd-kind-icon">tables<span class="tsd-signature-symbol">:</span> <a href="_types_.itabledefinition.html" class="tsd-signature-type">ITableDefinition</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L3">types.ts:3</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="observe" class="tsd-anchor"></a>
-					<h3>observe</h3>
-					<div class="tsd-signature tsd-kind-icon">observe<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L7">types.ts:7</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="queries" class="tsd-anchor"></a>
-					<h3>queries</h3>
-					<div class="tsd-signature tsd-kind-icon">queries<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><a href="../modules/_types_.html#iselectquery" class="tsd-signature-type">ISelectQuery</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L6">types.ts:6</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="queryhandlers" class="tsd-anchor"></a>
-					<h3>query<wbr>Handlers</h3>
-					<div class="tsd-signature tsd-kind-icon">query<wbr>Handlers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L5">types.ts:5</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="schema" class="tsd-anchor"></a>
-					<h3>schema</h3>
-					<div class="tsd-signature tsd-kind-icon">schema<span class="tsd-signature-symbol">:</span> <a href="_types_.ischemadefinition.html" class="tsd-signature-type">ISchemaDefinition</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/a368dee/src/types.ts#L8">types.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/f1f91c7/src/types.ts#L13">types.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
