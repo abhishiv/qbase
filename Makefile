@@ -1,7 +1,6 @@
 .PHONY: project
 project:
 	make build
-	make doc
 
 .PHONY: install
 install:
@@ -28,8 +27,10 @@ doc-file:
 
 .PHONY: doc
 doc:
-	mkdir -p docs
+	rm -rf docs/
+	mkdir p docs
 	cp -r src/ docs/
+	ls -l docs/
 	env SRC_FILE=./docs/index.ts make doc-file
 	env SRC_FILE=./docs/relational.ts make doc-file
 	env SRC_FILE=./docs/utils.ts make doc-file
