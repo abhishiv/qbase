@@ -10,6 +10,13 @@
     h1,h2,h3,h4,h5 {
       text-transform: none;
     }
+    div.annotation pre {
+        margin: 15px 0 15px;
+        padding-left: 15px;
+        background: #f5f5fe;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
   </style>
 </head>
 <body>
@@ -54,6 +61,8 @@
                 <a class="ss" href="#section-3">&#x00a7;</a>
               </div>
               <p>To use run <code>npm install -g @gratico/qbase</code></p>
+<pre><code><span class="hljs-keyword">import</span> {createStore} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/qbase&quot;</span>
+<span class="hljs-keyword">const</span> store = createStore()</code></pre>
 <h2 id="relational-helpers">relational helpers</h2>
 
             </div>
@@ -180,6 +189,31 @@
                 <a class="ss" href="#section-9">&#x00a7;</a>
               </div>
               <p>List of table describing their column and realtions</p>
+<pre><code><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> schema: ISchemaDefinition = {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Kernel&quot;</span>,
+  <span class="hljs-attr">tables</span>: [
+    {
+      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Masters&quot;</span>,
+      <span class="hljs-attr">primaryKey</span>: [<span class="hljs-string">&quot;id&quot;</span>],
+      <span class="hljs-attr">relations</span>: [
+        [
+          R.MTM,
+          <span class="hljs-string">&quot;viewports&quot;</span>,
+          {
+            <span class="hljs-attr">tableName</span>: <span class="hljs-string">&quot;Viewports&quot;</span>,
+            <span class="hljs-attr">remoteKey</span>: <span class="hljs-string">&quot;viewportId&quot;</span>,
+            <span class="hljs-attr">localKey</span>: <span class="hljs-string">&quot;masterId&quot;</span>,
+            <span class="hljs-attr">through</span>: <span class="hljs-string">&quot;MasterViewportJunction&quot;</span>,
+          },
+        ],
+      ],
+      <span class="hljs-attr">columns</span>: [
+        { <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;STRING&quot;</span> },
+        { <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;createdAt&quot;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;DATE_TIME&quot;</span>, <span class="hljs-attr">nullable</span>: <span class="hljs-literal">true</span> },
+      ],
+    } <span class="hljs-keyword">as</span> ITableDefinition,
+  ],
+};</code></pre>
 
             </div>
             

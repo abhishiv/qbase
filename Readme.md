@@ -11,6 +11,9 @@ Install and use
 
 To use run `npm install -g @gratico/qbase`
 
+    import {createStore} from "@gratico/qbase"
+    const store = createStore()
+
 
 relational helpers
 ---------------------------
@@ -84,6 +87,32 @@ Schema Definition
 ---------------------------
 
 List of table describing their column and realtions
+
+    export const schema: ISchemaDefinition = {
+      name: "Kernel",
+      tables: [
+        {
+          name: "Masters",
+          primaryKey: ["id"],
+          relations: [
+            [
+              R.MTM,
+              "viewports",
+              {
+                tableName: "Viewports",
+                remoteKey: "viewportId",
+                localKey: "masterId",
+                through: "MasterViewportJunction",
+              },
+            ],
+          ],
+          columns: [
+            { name: "id", type: "STRING" },
+            { name: "createdAt", type: "DATE_TIME", nullable: true },
+          ],
+        } as ITableDefinition,
+      ],
+    };
 
 
 ```
