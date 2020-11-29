@@ -91,7 +91,7 @@ we combine this property along with a relational schema to create</p>
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> DB&lt;T = <span class="hljs-built_in">any</span>&gt; = Atom&lt;T&gt;;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IAtomTable&lt;T = unknown&gt; {
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IAtomTable&lt;T = any&gt; {
   <span class="hljs-attr">value</span>: {
     [id: <span class="hljs-built_in">string</span>]: T;
   };
@@ -174,6 +174,11 @@ we combine this property along with a relational schema to create</p>
     getTableCursorPath(store, tableName, options)
   );
   <span class="hljs-keyword">return</span> recordCursor;
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IWriteOPResult {
+  commit?: ICommit;
+  exec: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">any</span>;
 }</pre></div></div>
             
         </li>
@@ -241,10 +246,16 @@ we combine this property along with a relational schema to create</p>
   options: IAtomOpOptions,
   id: <span class="hljs-built_in">string</span>,
   value: T
-</span>) </span>{
+</span>): <span class="hljs-title">IWriteOPResult</span> </span>{
   <span class="hljs-keyword">const</span> tableCursorPath = getTableCursorPath(store, tableName, options);
-  modifyRecord&lt;T&gt;(store, tableCursorPath, id, value, options);
-  <span class="hljs-keyword">return</span> getRecord(store, tableName, id, options);
+  <span class="hljs-keyword">const</span> commit = modifyRecord&lt;T&gt;(store, tableCursorPath, id, value, options);
+  <span class="hljs-keyword">return</span> {
+    commit,
+    <span class="hljs-attr">exec</span>: <span class="hljs-function">() =&gt;</span> {
+      commitPatch(store, commit);
+      <span class="hljs-keyword">return</span> getRecord(store, tableName, id, options);
+    },
+  };
 }</pre></div></div>
             
         </li>
@@ -278,10 +289,16 @@ we combine this property along with a relational schema to create</p>
   options: IAtomOpOptions,
   id: <span class="hljs-built_in">string</span>,
   value: T
-</span>) </span>{
+</span>): <span class="hljs-title">IWriteOPResult</span> </span>{
   <span class="hljs-keyword">const</span> tableCursorPath = getTableCursorPath(store, tableName, options);
-  modifyRecord&lt;T&gt;(store, tableCursorPath, id, value, options);
-  <span class="hljs-keyword">return</span> getRecord(store, tableName, id, options);
+  <span class="hljs-keyword">const</span> commit = modifyRecord&lt;T&gt;(store, tableCursorPath, id, value, options);
+  <span class="hljs-keyword">return</span> {
+    commit,
+    <span class="hljs-attr">exec</span>: <span class="hljs-function">() =&gt;</span> {
+      commitPatch(store, commit);
+      <span class="hljs-keyword">return</span> getRecord(store, tableName, id, options);
+    },
+  };
 }</pre></div></div>
             
         </li>
@@ -314,9 +331,15 @@ we combine this property along with a relational schema to create</p>
   tableName: <span class="hljs-built_in">string</span>,
   options: IAtomOpOptions,
   id: <span class="hljs-built_in">string</span>
-</span>) </span>{
+</span>): <span class="hljs-title">IWriteOPResult</span> </span>{
   <span class="hljs-keyword">const</span> tableCursorPath = getTableCursorPath(store, tableName, options);
-  modifyRecord&lt;T&gt;(store, tableCursorPath, id, <span class="hljs-literal">null</span>, options);
+  <span class="hljs-keyword">const</span> commit = modifyRecord&lt;T&gt;(store, tableCursorPath, id, <span class="hljs-literal">null</span>, options);
+  <span class="hljs-keyword">return</span> {
+    commit,
+    <span class="hljs-attr">exec</span>: <span class="hljs-function">() =&gt;</span> {
+      commitPatch(store, commit);
+    },
+  };
 }</pre></div></div>
             
         </li>
@@ -350,12 +373,12 @@ we combine this property along with a relational schema to create</p>
   tableCursorPath: <span class="hljs-built_in">string</span>[],
   recordId: <span class="hljs-built_in">string</span>,
   recordValue: T | <span class="hljs-literal">null</span>,
-  options: IAtomOpOptions,
-  del: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">false</span>
+  options: IAtomOpOptions
 </span>) </span>{
+  <span class="hljs-keyword">const</span> del = !recordValue;
   <span class="hljs-keyword">const</span> tableCursor = defCursor(store, tableCursorPath);
   <span class="hljs-keyword">const</span> table: IAtomTable = deref(store, tableCursor) || { <span class="hljs-attr">value</span>: {} };
-  <span class="hljs-keyword">let</span> tableChecksumList = <span class="hljs-built_in">Object</span>.values(table.value)
+  <span class="hljs-keyword">const</span> tableChecksumList = <span class="hljs-built_in">Object</span>.values(table.value)
     .map(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">item: <span class="hljs-built_in">any</span></span>) </span>{
       <span class="hljs-keyword">return</span> [item.id, table.checksums[item.id]];
     })
@@ -409,7 +432,7 @@ we combine this property along with a relational schema to create</p>
     <span class="hljs-attr">path</span>: [...tableCursorPath, <span class="hljs-string">&quot;checksum&quot;</span>],
     <span class="hljs-attr">value</span>: tableChecksum,
   });
-  <span class="hljs-keyword">return</span> commitPatch(store, commit);
+  <span class="hljs-keyword">return</span> commit;
 }</pre></div></div>
             
         </li>

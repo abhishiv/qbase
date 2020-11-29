@@ -429,10 +429,19 @@ footer {
 						<a href="_types_.html#iandquery" class="tsd-kind-icon">IAnd<wbr>Query</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="_types_.html#ibelongsto" class="tsd-kind-icon">IBelongs<wbr>To</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="_types_.html#idestroyquery" class="tsd-kind-icon">IDestroy<wbr>Query</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="_types_.html#ieqquery" class="tsd-kind-icon">IEq<wbr>Query</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="_types_.html#ihasmany" class="tsd-kind-icon">IHas<wbr>Many</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="_types_.html#ihasone" class="tsd-kind-icon">IHas<wbr>One</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="_types_.html#iinsertquery" class="tsd-kind-icon">IInsert<wbr>Query</a>
@@ -502,8 +511,11 @@ footer {
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_types_.html#iandquery" class="tsd-kind-icon">IAnd<wbr>Query</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_types_.html#ibelongsto" class="tsd-kind-icon">IBelongs<wbr>To</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_types_.html#idestroyquery" class="tsd-kind-icon">IDestroy<wbr>Query</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_types_.html#ieqquery" class="tsd-kind-icon">IEq<wbr>Query</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_types_.html#ihasmany" class="tsd-kind-icon">IHas<wbr>Many</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_types_.html#ihasone" class="tsd-kind-icon">IHas<wbr>One</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_types_.html#iinsertquery" class="tsd-kind-icon">IInsert<wbr>Query</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_types_.html#imanytomany" class="tsd-kind-icon">IMany<wbr>ToMany</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_types_.html#ineqquery" class="tsd-kind-icon">INeq<wbr>Query</a></li>
@@ -527,9 +539,33 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">IAnd<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../enums/_types_.m.html#_and" class="tsd-signature-type">$and</a><span class="tsd-signature-symbol">, </span><a href="_types_.html#ipredicate" class="tsd-signature-type">IPredicate</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L84">types.ts:84</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L87">types.ts:87</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+					<a name="ibelongsto" class="tsd-anchor"></a>
+					<h3>IBelongs<wbr>To</h3>
+					<div class="tsd-signature tsd-kind-icon">IBelongs<wbr>To<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>opts<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.belongsoptions.html" class="tsd-signature-type">BelongsOptions</a><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.r.html#bt" class="tsd-signature-type">BT</a><span class="tsd-signature-symbol"> }</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L72">types.ts:72</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>opts<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.belongsoptions.html" class="tsd-signature-type">BelongsOptions</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>type<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.r.html#bt" class="tsd-signature-type">BT</a></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
 					<a name="idestroyquery" class="tsd-anchor"></a>
@@ -537,7 +573,7 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">IDestroy<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../enums/_types_.q.html#destroy" class="tsd-signature-type">DESTROY</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_types_.idestroyciterion.html" class="tsd-signature-type">IDestroyCiterion</a><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L120">types.ts:120</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L123">types.ts:123</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -547,9 +583,57 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">IEq<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../enums/_types_.m.html#_eq" class="tsd-signature-type">$eq</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L86">types.ts:86</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L89">types.ts:89</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+					<a name="ihasmany" class="tsd-anchor"></a>
+					<h3>IHas<wbr>Many</h3>
+					<div class="tsd-signature tsd-kind-icon">IHas<wbr>Many<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>opts<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.hasmanyoptions.html" class="tsd-signature-type">HasManyOptions</a><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.r.html#hm" class="tsd-signature-type">HM</a><span class="tsd-signature-symbol"> }</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L70">types.ts:70</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>opts<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.hasmanyoptions.html" class="tsd-signature-type">HasManyOptions</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>type<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.r.html#hm" class="tsd-signature-type">HM</a></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+					<a name="ihasone" class="tsd-anchor"></a>
+					<h3>IHas<wbr>One</h3>
+					<div class="tsd-signature tsd-kind-icon">IHas<wbr>One<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>opts<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.hasoneoptions.html" class="tsd-signature-type">HasOneOptions</a><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.r.html#h1" class="tsd-signature-type">H1</a><span class="tsd-signature-symbol"> }</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L71">types.ts:71</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>opts<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.hasoneoptions.html" class="tsd-signature-type">HasOneOptions</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>type<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.r.html#h1" class="tsd-signature-type">H1</a></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
 					<a name="iinsertquery" class="tsd-anchor"></a>
@@ -557,19 +641,33 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">IInsert<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../enums/_types_.q.html#insert" class="tsd-signature-type">INSERT</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L109">types.ts:109</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L112">types.ts:112</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
 					<a name="imanytomany" class="tsd-anchor"></a>
 					<h3>IMany<wbr>ToMany</h3>
-					<div class="tsd-signature tsd-kind-icon">IMany<wbr>ToMany<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../enums/_types_.r.html#mtm" class="tsd-signature-type">MTM</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_types_.manytomanyoptions.html" class="tsd-signature-type">ManyToManyOptions</a><span class="tsd-signature-symbol">]</span></div>
+					<div class="tsd-signature tsd-kind-icon">IMany<wbr>ToMany<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>opts<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.manytomanyoptions.html" class="tsd-signature-type">ManyToManyOptions</a><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.r.html#mtm" class="tsd-signature-type">MTM</a><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L69">types.ts:69</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L65">types.ts:65</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>opts<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.manytomanyoptions.html" class="tsd-signature-type">ManyToManyOptions</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>type<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.r.html#mtm" class="tsd-signature-type">MTM</a></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
 					<a name="ineqquery" class="tsd-anchor"></a>
@@ -577,7 +675,7 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">INeq<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../enums/_types_.m.html#_neq" class="tsd-signature-type">$neq</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L87">types.ts:87</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L90">types.ts:90</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -587,7 +685,7 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">IOr<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../enums/_types_.m.html#_or" class="tsd-signature-type">$or</a><span class="tsd-signature-symbol">, </span><a href="_types_.html#ipredicate" class="tsd-signature-type">IPredicate</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L85">types.ts:85</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L88">types.ts:88</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -597,7 +695,7 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">IPredicate<span class="tsd-signature-symbol">:</span> <a href="_types_.html#iandquery" class="tsd-signature-type">IAndQuery</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#iorquery" class="tsd-signature-type">IOrQuery</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#ieqquery" class="tsd-signature-type">IEqQuery</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#ineqquery" class="tsd-signature-type">INeqQuery</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L88">types.ts:88</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L91">types.ts:91</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -607,7 +705,7 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">IQuery<span class="tsd-signature-symbol">:</span> <a href="_types_.html#iselectquery" class="tsd-signature-type">ISelectQuery</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#iinsertquery" class="tsd-signature-type">IInsertQuery</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#iupdatequery" class="tsd-signature-type">IUpdateQuery</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#idestroyquery" class="tsd-signature-type">IDestroyQuery</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L121">types.ts:121</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L124">types.ts:124</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -617,17 +715,17 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">ISelect<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../enums/_types_.q.html#select" class="tsd-signature-type">SELECT</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_types_.iselectcriterion.html" class="tsd-signature-type">ISelectCriterion</a><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L108">types.ts:108</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L111">types.ts:111</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
 					<a name="itablerelation" class="tsd-anchor"></a>
 					<h3>ITable<wbr>Relation</h3>
-					<div class="tsd-signature tsd-kind-icon">ITable<wbr>Relation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../enums/_types_.r.html#hm" class="tsd-signature-type">HM</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_types_.hasmanyoptions.html" class="tsd-signature-type">HasManyOptions</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">[</span><a href="../enums/_types_.r.html#bt" class="tsd-signature-type">BT</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_types_.belongsoptions.html" class="tsd-signature-type">BelongsOptions</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">[</span><a href="../enums/_types_.r.html#h1" class="tsd-signature-type">H1</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_types_.hasoneoptions.html" class="tsd-signature-type">HasOneOptions</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><a href="_types_.html#imanytomany" class="tsd-signature-type">IManyToMany</a></div>
+					<div class="tsd-signature tsd-kind-icon">ITable<wbr>Relation<span class="tsd-signature-symbol">:</span> <a href="_types_.html#ihasone" class="tsd-signature-type">IHasOne</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#ibelongsto" class="tsd-signature-type">IBelongsTo</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#ihasmany" class="tsd-signature-type">IHasMany</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#imanytomany" class="tsd-signature-type">IManyToMany</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L64">types.ts:64</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L64">types.ts:64</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -637,7 +735,7 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">IUpdate<wbr>Query<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><a href="../enums/_types_.q.html#update" class="tsd-signature-type">UPDATE</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_types_.iupdateciterion.html" class="tsd-signature-type">IUpdateCiterion</a><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L116">types.ts:116</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L119">types.ts:119</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -647,7 +745,7 @@ footer {
 					<div class="tsd-signature tsd-kind-icon">ORDER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"ASC"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"DESC"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/types.ts#L63">types.ts:63</a></li>
+							<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/types.ts#L63">types.ts:63</a></li>
 						</ul>
 					</aside>
 				</section>

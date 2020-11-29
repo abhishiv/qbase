@@ -62,14 +62,10 @@
   ISelectQuery,
   ISchemaDefinition,
   IManyToMany,
+  R,
 } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./types&quot;</span>;
 <span class="hljs-keyword">import</span> { observe } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./watch&quot;</span>;
 <span class="hljs-keyword">import</span> { DB, defDb <span class="hljs-keyword">as</span> createDb } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./relational&quot;</span>;
-
-<span class="hljs-keyword">import</span> {
-  Schema <span class="hljs-keyword">as</span> NormalizrSchema,
-  schema <span class="hljs-keyword">as</span> normalizrSchema,
-} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;normalizr&quot;</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createStore</span>(<span class="hljs-params">schema: ISchemaDefinition</span>): <span class="hljs-title">IQBase</span> </span>{
   <span class="hljs-keyword">const</span> db = createDb();
@@ -78,7 +74,7 @@
   });
   <span class="hljs-keyword">const</span> queryHandlers = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">Function</span>&gt;&gt;();
   <span class="hljs-keyword">const</span> queries = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, [ISelectQuery, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>]&gt;();
-  <span class="hljs-keyword">const</span> compiledSchema = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;();
+  <span class="hljs-keyword">const</span> compiledSchema = {};
   <span class="hljs-keyword">const</span> store: IQBase = {
     db,
     compiledSchema,
@@ -88,24 +84,46 @@
       observe(store, query, handler),
     schema,
   };
-  schema.tables.forEach(<span class="hljs-function">(<span class="hljs-params">table</span>) =&gt;</span> {
-    compileSchema(store, table);
-  });
-  <span class="hljs-keyword">return</span> store;
-}
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">compileSchema</span>(<span class="hljs-params">db: IQBase, tableDefintion: ITableDefinition</span>) </span>{
-  <span class="hljs-keyword">const</span> entity = <span class="hljs-keyword">new</span> normalizrSchema.Entity(tableDefintion.name);
-  db.compiledSchema.set(tableDefintion.name, entity);
-}
+  schema.tables.forEach(<span class="hljs-function">(<span class="hljs-params">table</span>) =&gt;</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-3">&#x00a7;</a>
+              </div>
+              <p>compileSchema(store, table);</p>
 
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createTable</span>(<span class="hljs-params">db: DB, tableDefinition: ITableDefinition</span>) </span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  });
+  <span class="hljs-keyword">return</span> store;
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-4">&#x00a7;</a>
+              </div>
+              <p>export function compileSchema(db: IQBase, tableDefintion: ITableDefinition) {}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createTable</span>(<span class="hljs-params">db: DB, tableDefinition: ITableDefinition</span>) </span>{
   db.state[tableDefinition.name] = {
     <span class="hljs-attr">checksums</span>: {},
     <span class="hljs-attr">value</span>: {},
   };
   (tableDefinition.relations || []).forEach(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> {
-    <span class="hljs-keyword">if</span> ((el <span class="hljs-keyword">as</span> IManyToMany)[<span class="hljs-number">2</span>].through) {
-      <span class="hljs-keyword">const</span> thoughTableName: <span class="hljs-built_in">string</span> = (el <span class="hljs-keyword">as</span> IManyToMany)[<span class="hljs-number">2</span>].through;
+    <span class="hljs-keyword">if</span> (el.type === R.MTM &amp;&amp; el.opts.through) {
+      <span class="hljs-keyword">const</span> thoughTableName = el.opts.through;
       <span class="hljs-keyword">if</span> (!db.state[thoughTableName]) {
         db.state[thoughTableName] = {
           <span class="hljs-attr">checksums</span>: {},

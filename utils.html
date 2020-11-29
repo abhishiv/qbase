@@ -42,7 +42,7 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> { IQBase, ITableDefinition } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./types&quot;</span>;
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> { IQBase, ITableDefinition, ISelectQuery, R } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./types&quot;</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTableDefinition</span>(<span class="hljs-params">
   db: IQBase,
@@ -59,12 +59,46 @@
   includeName: <span class="hljs-built_in">string</span>
 </span>) </span>{
   <span class="hljs-keyword">const</span> includeDef = (tableDef.relations || []).find(
-    <span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el[<span class="hljs-number">1</span>] === includeName
+    <span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> el.name === includeName
   );
   <span class="hljs-keyword">if</span> (!includeDef) {
     <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">&quot;NO_RELATION = &quot;</span> + includeName);
   }
   <span class="hljs-keyword">return</span> includeDef;
+}
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRelatedTables</span>(<span class="hljs-params">
+  store: IQBase,
+  query: ISelectQuery,
+  tableDef: ITableDefinition
+</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">string</span>&gt;([
+    query[<span class="hljs-number">1</span>],
+    ...(query[<span class="hljs-number">2</span>].includes || []).reduce&lt;<span class="hljs-built_in">string</span>[]&gt;(
+      <span class="hljs-function">(<span class="hljs-params">state: <span class="hljs-built_in">string</span>[], includeName: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
+        <span class="hljs-keyword">const</span> relation = getRelationDefintion(store, tableDef, includeName);
+        <span class="hljs-keyword">if</span> (relation.type === R.MTM) {
+          <span class="hljs-keyword">return</span> [...state, relation.opts.tableName, relation.opts.through];
+        } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="sswrap ">
+                <a class="ss" href="#section-2">&#x00a7;</a>
+              </div>
+              <p>todo handle R.HM, R.BT, R.H1</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">return</span> state;
+        }
+      },
+      [] <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>[]
+    ),
+  ]);
 }</pre></div></div>
             
         </li>

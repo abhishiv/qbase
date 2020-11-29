@@ -32,7 +32,7 @@ import { checksum } from "@gratico/checksum";
 
 export type DB<T = any> = Atom<T>;
 
-export interface IAtomTable<T = unknown> {
+export interface IAtomTable<T = any> {
   value: {
     [id: string]: T;
   };
@@ -117,6 +117,11 @@ export function getTableCursor<T>(
   return recordCursor;
 }
 
+export interface IWriteOPResult {
+  commit?: ICommit;
+  exec: () => any;
+}
+
 ```
 
 GET
@@ -144,10 +149,16 @@ export function createRecord<T>(
   options: IAtomOpOptions,
   id: string,
   value: T
-) {
+): IWriteOPResult {
   const tableCursorPath = getTableCursorPath(store, tableName, options);
-  modifyRecord<T>(store, tableCursorPath, id, value, options);
-  return getRecord(store, tableName, id, options);
+  const commit = modifyRecord<T>(store, tableCursorPath, id, value, options);
+  return {
+    commit,
+    exec: () => {
+      commitPatch(store, commit);
+      return getRecord(store, tableName, id, options);
+    },
+  };
 }
 
 ```
@@ -162,10 +173,16 @@ export function updateRecord<T>(
   options: IAtomOpOptions,
   id: string,
   value: T
-) {
+): IWriteOPResult {
   const tableCursorPath = getTableCursorPath(store, tableName, options);
-  modifyRecord<T>(store, tableCursorPath, id, value, options);
-  return getRecord(store, tableName, id, options);
+  const commit = modifyRecord<T>(store, tableCursorPath, id, value, options);
+  return {
+    commit,
+    exec: () => {
+      commitPatch(store, commit);
+      return getRecord(store, tableName, id, options);
+    },
+  };
 }
 
 ```
@@ -179,9 +196,15 @@ export function deleteRecord<T>(
   tableName: string,
   options: IAtomOpOptions,
   id: string
-) {
+): IWriteOPResult {
   const tableCursorPath = getTableCursorPath(store, tableName, options);
-  modifyRecord<T>(store, tableCursorPath, id, null, options);
+  const commit = modifyRecord<T>(store, tableCursorPath, id, null, options);
+  return {
+    commit,
+    exec: () => {
+      commitPatch(store, commit);
+    },
+  };
 }
 
 ```
@@ -197,12 +220,12 @@ export function modifyRecord<T>(
   tableCursorPath: string[],
   recordId: string,
   recordValue: T | null,
-  options: IAtomOpOptions,
-  del: boolean = false
+  options: IAtomOpOptions
 ) {
+  const del = !recordValue;
   const tableCursor = defCursor(store, tableCursorPath);
   const table: IAtomTable = deref(store, tableCursor) || { value: {} };
-  let tableChecksumList = Object.values(table.value)
+  const tableChecksumList = Object.values(table.value)
     .map(function (item: any) {
       return [item.id, table.checksums[item.id]];
     })
@@ -247,7 +270,7 @@ performance hence push insread of spread
     path: [...tableCursorPath, "checksum"],
     value: tableChecksum,
   });
-  return commitPatch(store, commit);
+  return commit;
 }
 
 ```

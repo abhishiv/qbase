@@ -378,6 +378,9 @@ footer {
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_queries_.iincluderesults.html" class="tsd-kind-icon">IInclude<wbr>Results</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/_queries_.iincludesresults.html" class="tsd-kind-icon">IIncludes<wbr>Results</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
@@ -385,6 +388,9 @@ footer {
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_queries_.html#computeincludes" class="tsd-kind-icon">compute<wbr>Includes</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_queries_.html#denormalizeresults" class="tsd-kind-icon">denormalize<wbr>Results</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_queries_.html#getdestroy" class="tsd-kind-icon">get<wbr>Destroy</a>
@@ -399,7 +405,10 @@ footer {
 						<a href="_queries_.html#getupdate" class="tsd-kind-icon">get<wbr>Update</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_queries_.html#serializeresults" class="tsd-kind-icon">serialize<wbr>Results</a>
+						<a href="_queries_.html#performtableintersection" class="tsd-kind-icon">perform<wbr>Table<wbr>Intersection</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_queries_.html#serializeincluderesults" class="tsd-kind-icon">serialize<wbr>Include<wbr>Results</a>
 					</li>
 				</ul>
 			</nav>
@@ -412,6 +421,7 @@ footer {
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_queries_.iincluderesults.html" class="tsd-kind-icon">IInclude<wbr>Results</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_queries_.iincludesresults.html" class="tsd-kind-icon">IIncludes<wbr>Results</a></li>
 							</ul>
 						</section>
@@ -420,11 +430,13 @@ footer {
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_queries_.html#compilepredicate" class="tsd-kind-icon">compile<wbr>Predicate</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_queries_.html#computeincludes" class="tsd-kind-icon">compute<wbr>Includes</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_queries_.html#denormalizeresults" class="tsd-kind-icon">denormalize<wbr>Results</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_queries_.html#getdestroy" class="tsd-kind-icon">get<wbr>Destroy</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_queries_.html#getinsert" class="tsd-kind-icon">get<wbr>Insert</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_queries_.html#getselect" class="tsd-kind-icon">get<wbr>Select</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_queries_.html#getupdate" class="tsd-kind-icon">get<wbr>Update</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_queries_.html#serializeresults" class="tsd-kind-icon">serialize<wbr>Results</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_queries_.html#performtableintersection" class="tsd-kind-icon">perform<wbr>Table<wbr>Intersection</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_queries_.html#serializeincluderesults" class="tsd-kind-icon">serialize<wbr>Include<wbr>Results</a></li>
 							</ul>
 						</section>
 					</div>
@@ -436,13 +448,13 @@ footer {
 					<a name="compilepredicate" class="tsd-anchor"></a>
 					<h3>compile<wbr>Predicate</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">compile<wbr>Predicate<span class="tsd-signature-symbol">(</span>db<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.iqbase.html" class="tsd-signature-type">IQBase</a>, query<span class="tsd-signature-symbol">: </span><a href="_types_.html#iselectquery" class="tsd-signature-type">ISelectQuery</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#iupdatequery" class="tsd-signature-type">IUpdateQuery</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#idestroyquery" class="tsd-signature-type">IDestroyQuery</a>, predicate<span class="tsd-signature-symbol">?: </span><a href="_types_.html#ipredicate" class="tsd-signature-type">IPredicate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>[columnName]<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>$and<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>$or<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>[columnName]<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> }</span></li>
+						<li class="tsd-signature tsd-kind-icon">compile<wbr>Predicate<span class="tsd-signature-symbol">(</span>db<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.iqbase.html" class="tsd-signature-type">IQBase</a>, query<span class="tsd-signature-symbol">: </span><a href="_types_.html#iselectquery" class="tsd-signature-type">ISelectQuery</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#iupdatequery" class="tsd-signature-type">IUpdateQuery</a><span class="tsd-signature-symbol"> | </span><a href="_types_.html#idestroyquery" class="tsd-signature-type">IDestroyQuery</a>, predicate<span class="tsd-signature-symbol">?: </span><a href="_types_.html#ipredicate" class="tsd-signature-type">IPredicate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>$exists<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>[columnName]<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>$and<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>$or<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>[columnName]<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> }</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/queries.ts#L58">queries.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/queries.ts#L76">queries.ts:76</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -457,7 +469,7 @@ footer {
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> predicate: <a href="_types_.html#ipredicate" class="tsd-signature-type">IPredicate</a><span class="tsd-signature-symbol"> = query[2].predicate as IPredicate</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>[columnName]<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>$and<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>$or<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>[columnName]<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> }</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>$exists<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>[columnName]<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>$and<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>$or<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>[columnName]<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> }</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -465,13 +477,13 @@ footer {
 					<a name="computeincludes" class="tsd-anchor"></a>
 					<h3>compute<wbr>Includes</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">compute<wbr>Includes<span class="tsd-signature-symbol">(</span>db<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.iqbase.html" class="tsd-signature-type">IQBase</a>, query<span class="tsd-signature-symbol">: </span><a href="_types_.html#iselectquery" class="tsd-signature-type">ISelectQuery</a>, tableDef<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.itabledefinition.html" class="tsd-signature-type">ITableDefinition</a>, tableRecords<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_queries_.iincludesresults.html" class="tsd-signature-type">IIncludesResults</a></li>
+						<li class="tsd-signature tsd-kind-icon">compute<wbr>Includes<span class="tsd-signature-symbol">(</span>db<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.iqbase.html" class="tsd-signature-type">IQBase</a>, query<span class="tsd-signature-symbol">: </span><a href="_types_.html#iselectquery" class="tsd-signature-type">ISelectQuery</a>, tableDef<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.itabledefinition.html" class="tsd-signature-type">ITableDefinition</a>, sourceTableRecords<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_queries_.iincludesresults.html" class="tsd-signature-type">IIncludesResults</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/queries.ts#L104">queries.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/queries.ts#L174">queries.ts:174</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -486,10 +498,45 @@ footer {
 									<h5>tableDef: <a href="../interfaces/_types_.itabledefinition.html" class="tsd-signature-type">ITableDefinition</a></h5>
 								</li>
 								<li>
-									<h5>tableRecords: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>sourceTableRecords: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_queries_.iincludesresults.html" class="tsd-signature-type">IIncludesResults</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="denormalizeresults" class="tsd-anchor"></a>
+					<h3>denormalize<wbr>Results</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">denormalize<wbr>Results<span class="tsd-signature-symbol">(</span>db<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.iqbase.html" class="tsd-signature-type">IQBase</a>, query<span class="tsd-signature-symbol">: </span><a href="_types_.html#iselectquery" class="tsd-signature-type">ISelectQuery</a>, tableDef<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.itabledefinition.html" class="tsd-signature-type">ITableDefinition</a>, includesResults<span class="tsd-signature-symbol">: </span><a href="../interfaces/_queries_.iincludesresults.html" class="tsd-signature-type">IIncludesResults</a>, tableRecords<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/queries.ts#L105">queries.ts:105</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>db: <a href="../interfaces/_types_.iqbase.html" class="tsd-signature-type">IQBase</a></h5>
+								</li>
+								<li>
+									<h5>query: <a href="_types_.html#iselectquery" class="tsd-signature-type">ISelectQuery</a></h5>
+								</li>
+								<li>
+									<h5>tableDef: <a href="../interfaces/_types_.itabledefinition.html" class="tsd-signature-type">ITableDefinition</a></h5>
+								</li>
+								<li>
+									<h5>includesResults: <a href="../interfaces/_queries_.iincludesresults.html" class="tsd-signature-type">IIncludesResults</a></h5>
+								</li>
+								<li>
+									<h5>tableRecords: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -503,7 +550,7 @@ footer {
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/queries.ts#L33">queries.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/queries.ts#L38">queries.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -529,7 +576,7 @@ footer {
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/queries.ts#L23">queries.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/queries.ts#L27">queries.ts:27</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -555,7 +602,7 @@ footer {
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/queries.ts#L44">queries.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/queries.ts#L49">queries.ts:49</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -581,7 +628,7 @@ footer {
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/queries.ts#L38">queries.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/queries.ts#L43">queries.ts:43</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -598,16 +645,45 @@ footer {
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="serializeresults" class="tsd-anchor"></a>
-					<h3>serialize<wbr>Results</h3>
+					<a name="performtableintersection" class="tsd-anchor"></a>
+					<h3>perform<wbr>Table<wbr>Intersection</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">serialize<wbr>Results<span class="tsd-signature-symbol">(</span>db<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.iqbase.html" class="tsd-signature-type">IQBase</a>, query<span class="tsd-signature-symbol">: </span><a href="_types_.html#iselectquery" class="tsd-signature-type">ISelectQuery</a>, tableDef<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.itabledefinition.html" class="tsd-signature-type">ITableDefinition</a>, includesResults<span class="tsd-signature-symbol">: </span><a href="../interfaces/_queries_.iincludesresults.html" class="tsd-signature-type">IIncludesResults</a>, tableRecord<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">perform<wbr>Table<wbr>Intersection<span class="tsd-signature-symbol">(</span>sourceTableIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, targetTableRecords<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, foreignKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/c6c7de4/src/queries.ts#L87">queries.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/queries.ts#L257">queries.ts:257</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>sourceTableIds: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>targetTableRecords: <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>foreignKey: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="serializeincluderesults" class="tsd-anchor"></a>
+					<h3>serialize<wbr>Include<wbr>Results</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">serialize<wbr>Include<wbr>Results<span class="tsd-signature-symbol">(</span>db<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.iqbase.html" class="tsd-signature-type">IQBase</a>, query<span class="tsd-signature-symbol">: </span><a href="_types_.html#iselectquery" class="tsd-signature-type">ISelectQuery</a>, tableDef<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.itabledefinition.html" class="tsd-signature-type">ITableDefinition</a>, includesResults<span class="tsd-signature-symbol">: </span><a href="../interfaces/_queries_.iincludesresults.html" class="tsd-signature-type">IIncludesResults</a>, tableRecord<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/abhishiv/qbase/blob/3cc4f94/src/queries.ts#L143">queries.ts:143</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>

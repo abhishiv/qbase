@@ -5,7 +5,7 @@
 import { DB } from "./relational";
 export interface IQBase {
   db: DB;
-  compiledSchema: Map<string, any>;
+  compiledSchema: Record<string, any>;
   queryHandlers: Map<string, Set<Function>>;
   queries: Map<string, [ISelectQuery, string, string]>;
   observe: Function;
@@ -70,12 +70,15 @@ export interface ManyToManyOptions {
   through: string;
 }
 export type ORDER = "ASC" | "DESC";
-export type ITableRelation =
-  | [R.HM, string, HasManyOptions]
-  | [R.BT, string, BelongsOptions]
-  | [R.H1, string, HasOneOptions]
-  | IManyToMany;
-export type IManyToMany = [R.MTM, string, ManyToManyOptions];
+export type ITableRelation = IHasOne | IBelongsTo | IHasMany | IManyToMany;
+export type IManyToMany = {
+  type: R.MTM;
+  name: string;
+  opts: ManyToManyOptions;
+};
+export type IHasMany = { type: R.HM; name: string; opts: HasManyOptions };
+export type IHasOne = { type: R.H1; name: string; opts: HasOneOptions };
+export type IBelongsTo = { type: R.BT; name: string; opts: BelongsOptions };
 
 export interface IForeignKeyDefinition {
   ref: string;

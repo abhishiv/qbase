@@ -45,7 +45,7 @@
             <div class="content"><div class='highlight'><pre><span class="hljs-keyword">import</span> { DB } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./relational&quot;</span>;
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IQBase {
   <span class="hljs-attr">db</span>: DB;
-  compiledSchema: <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;;
+  compiledSchema: Record&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;;
   queryHandlers: <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">Function</span>&gt;&gt;;
   queries: <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, [ISelectQuery, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>]&gt;;
   observe: <span class="hljs-built_in">Function</span>;
@@ -128,12 +128,15 @@
   through: <span class="hljs-built_in">string</span>;
 }
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ORDER = <span class="hljs-string">&quot;ASC&quot;</span> | <span class="hljs-string">&quot;DESC&quot;</span>;
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ITableRelation =
-  | [R.HM, <span class="hljs-built_in">string</span>, HasManyOptions]
-  | [R.BT, <span class="hljs-built_in">string</span>, BelongsOptions]
-  | [R.H1, <span class="hljs-built_in">string</span>, HasOneOptions]
-  | IManyToMany;
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IManyToMany = [R.MTM, <span class="hljs-built_in">string</span>, ManyToManyOptions];
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ITableRelation = IHasOne | IBelongsTo | IHasMany | IManyToMany;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IManyToMany = {
+  <span class="hljs-attr">type</span>: R.MTM;
+  name: <span class="hljs-built_in">string</span>;
+  opts: ManyToManyOptions;
+};
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IHasMany = { <span class="hljs-attr">type</span>: R.HM; name: <span class="hljs-built_in">string</span>; opts: HasManyOptions };
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IHasOne = { <span class="hljs-attr">type</span>: R.H1; name: <span class="hljs-built_in">string</span>; opts: HasOneOptions };
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IBelongsTo = { <span class="hljs-attr">type</span>: R.BT; name: <span class="hljs-built_in">string</span>; opts: BelongsOptions };
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IForeignKeyDefinition {
   <span class="hljs-attr">ref</span>: <span class="hljs-built_in">string</span>;

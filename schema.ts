@@ -7,14 +7,10 @@ import {
   ISelectQuery,
   ISchemaDefinition,
   IManyToMany,
+  R,
 } from "./types";
 import { observe } from "./watch";
 import { DB, defDb as createDb } from "./relational";
-
-import {
-  Schema as NormalizrSchema,
-  schema as normalizrSchema,
-} from "normalizr";
 
 export function createStore(schema: ISchemaDefinition): IQBase {
   const db = createDb();
@@ -23,7 +19,7 @@ export function createStore(schema: ISchemaDefinition): IQBase {
   });
   const queryHandlers = new Map<string, Set<Function>>();
   const queries = new Map<string, [ISelectQuery, string, string]>();
-  const compiledSchema = new Map<string, any>();
+  const compiledSchema = {};
   const store: IQBase = {
     db,
     compiledSchema,
@@ -34,14 +30,11 @@ export function createStore(schema: ISchemaDefinition): IQBase {
     schema,
   };
   schema.tables.forEach((table) => {
-    compileSchema(store, table);
+    //compileSchema(store, table);
   });
   return store;
 }
-export function compileSchema(db: IQBase, tableDefintion: ITableDefinition) {
-  const entity = new normalizrSchema.Entity(tableDefintion.name);
-  db.compiledSchema.set(tableDefintion.name, entity);
-}
+//export function compileSchema(db: IQBase, tableDefintion: ITableDefinition) {}
 
 export function createTable(db: DB, tableDefinition: ITableDefinition) {
   db.state[tableDefinition.name] = {
@@ -49,8 +42,8 @@ export function createTable(db: DB, tableDefinition: ITableDefinition) {
     value: {},
   };
   (tableDefinition.relations || []).forEach((el) => {
-    if ((el as IManyToMany)[2].through) {
-      const thoughTableName: string = (el as IManyToMany)[2].through;
+    if (el.type === R.MTM && el.opts.through) {
+      const thoughTableName = el.opts.through;
       if (!db.state[thoughTableName]) {
         db.state[thoughTableName] = {
           checksums: {},

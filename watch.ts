@@ -6,7 +6,11 @@ import { checksum } from "@gratico/checksum";
 import shortid from "shortid";
 
 import { IQBase, ITableDefinition, ISelectQuery, R } from "./types";
-import { getTableDefinition, getRelationDefintion } from "./utils";
+import {
+  getTableDefinition,
+  getRelationDefintion,
+  getRelatedTables,
+} from "./utils";
 export function observe(store: IQBase, query: ISelectQuery, handler: Function) {
   const id = shortid();
   const queryHash = checksum(query);
@@ -32,30 +36,6 @@ export function observe(store: IQBase, query: ISelectQuery, handler: Function) {
 
 export function getDirtyTables(store: IQBase, commit: ICommit) {
   return [...new Set(commit.map((el) => el.path[0] as string))];
-}
-export function getRelatedTables(
-  store: IQBase,
-  query: ISelectQuery,
-  tableDef: ITableDefinition
-) {
-  return new Set<string>([
-    query[1],
-    ...Object.keys(query[2].includes || []).reduce<string[]>(
-      (state: string[], includeName: string) => {
-        const relation = getRelationDefintion(store, tableDef, includeName);
-        if (relation[0] === R.MTM) {
-          return [
-            ...state,
-            relation[2].tableName,
-            relation[2].through as string,
-          ];
-        } else {
-          return state;
-        }
-      },
-      [] as string[]
-    ),
-  ]);
 }
 export async function addHandler(
   store: IQBase,
