@@ -185,7 +185,6 @@ export function computeIncludes(
     },
     {} as { [key: string]: IAtomTable }
   );
-  const tableName = query[1];
   const sourceTableIds = sourceTableRecords.map((el) => el.id);
 
   (query[2].includes || []).reduce<Record<any, any>>(

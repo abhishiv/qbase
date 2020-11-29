@@ -23,16 +23,16 @@
 //           name: "Masters",
 //           primaryKey: ["id"],
 //           relations: [
-//             [
-//               R.MTM, // relation type
-//               "viewports", // relation name
-//               { // relation options
+//             {
+//               type: R.MTM,
+//               name: "viewports",
+//               opts: {
 //                 tableName: "Viewports",
 //                 remoteKey: "viewportId",
 //                 localKey: "masterId",
 //                 through: "MasterViewportJunction",
 //               },
-//             ],
+//             },
 //           ],
 //           columns: [
 //             { name: "id", type: "STRING" },
