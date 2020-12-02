@@ -23,8 +23,7 @@
   ],
   "scripts": {
     "test": "./node_modules/.bin/jest --runInBand",
-    "pub": "npm publish --access=public",
-    "build": "cp ../../tools/mono/Makefile ./Makefile && make build"
+    "build": "make"
   },
   "dependencies": {
     "@gratico/atom": "^0.1.2",
