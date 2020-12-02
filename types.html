@@ -48,7 +48,6 @@
   compiledSchema: Record&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;;
   queryHandlers: <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">Set</span>&lt;<span class="hljs-built_in">Function</span>&gt;&gt;;
   queries: <span class="hljs-built_in">Map</span>&lt;<span class="hljs-built_in">string</span>, [ISelectQuery, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">string</span>]&gt;;
-  observe: <span class="hljs-built_in">Function</span>;
   schema: ISchemaDefinition;
 }
 
@@ -221,7 +220,7 @@
   limit?: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// NIMP</span>
   skip?: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// NIMP</span>
 }
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ISelectQuery = [Q.SELECT, <span class="hljs-built_in">string</span>, ISelectCriterion];
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> ISelectQuery = [Q.SELECT, <span class="hljs-built_in">string</span>, ISelectCriterion?];
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> IInsertQuery = [Q.INSERT, <span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>[]];
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> IUpdateCiterion {

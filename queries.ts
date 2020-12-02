@@ -22,9 +22,11 @@ import {
   HasManyOptions,
   BelongsOptions,
   HasOneOptions,
+  ISelectCriterion,
 } from "./types";
 
-export function getInsert(db: IQBase, query: IInsertQuery) {
+export function getInsert(db: IQBase, tableName: string, values: any[]) {
+  const query: IInsertQuery = [Q.INSERT, tableName, values];
   return () => {
     const tableName = query[1];
     const rows = query[2].map((el) => el);
@@ -46,7 +48,12 @@ export function getUpdate(db: IQBase, query: IUpdateQuery) {
   };
 }
 
-export function getSelect(db: IQBase, query: ISelectQuery) {
+export function getSelect<T = any>(
+  db: IQBase,
+  tableName: string,
+  criterio?: ISelectCriterion
+) {
+  const query: ISelectQuery = [Q.SELECT, tableName, criterio];
   return () => {
     const tableDef = getTableDefinition(db, query[1]);
     const table = getRecords(db.db, tableDef.name);
@@ -54,7 +61,6 @@ export function getSelect(db: IQBase, query: ISelectQuery) {
     const siftQuery = sift(compilePredicate(db, query));
     const filtered = list.filter(siftQuery) as Record<any, any>[];
     const includeSearchResults = computeIncludes(db, query, tableDef, filtered);
-
     return denormalizeResults(
       db,
       query,
@@ -69,14 +75,14 @@ export function getSelect(db: IQBase, query: ISelectQuery) {
           el
         );
       })
-    );
+    ) as T[];
   };
 }
 
 export function compilePredicate(
   db: IQBase,
   query: ISelectQuery | IUpdateQuery | IDestroyQuery,
-  predicate: IPredicate = query[2].predicate as IPredicate
+  predicate: IPredicate = (query[2] || {}).predicate as IPredicate
 ) {
   if (!predicate) {
     return { $exists: true };
@@ -185,10 +191,9 @@ export function computeIncludes(
     },
     {} as { [key: string]: IAtomTable }
   );
-  const tableName = query[1];
   const sourceTableIds = sourceTableRecords.map((el) => el.id);
 
-  (query[2].includes || []).reduce<Record<any, any>>(
+  ((query[2] || {}).includes || []).reduce<Record<any, any>>(
     (state, includeName: string) => {
       const relationDefintion = getRelationDefintion(db, tableDef, includeName);
       const targetTableName = relationDefintion.opts.tableName;

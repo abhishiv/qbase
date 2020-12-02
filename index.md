@@ -4,7 +4,9 @@
 @gratico/qbase
 =====
 
-Simple light and super-performant active record like ORM for browser with MongoDB styled queries and watchable queries.
+Simple light and super-fast data store for browser with support for denormalization, MongoDB styled querying and watchable queries.
+
+Written to be an lightweight functional alternative to @apollo/client. PRs welcomed for adding support for JSONSchema
 
 Install and use
 ---------------
@@ -27,16 +29,16 @@ List of table describing their column and realtions
           name: "Masters",
           primaryKey: ["id"],
           relations: [
-            [
-              R.MTM, // relation type
-              "viewports", // relation name
-              { // relation options
+            {
+              type: R.MTM,
+              name: "viewports",
+              opts: {
                 tableName: "Viewports",
                 remoteKey: "viewportId",
                 localKey: "masterId",
                 through: "MasterViewportJunction",
               },
-            ],
+            },
           ],
           columns: [
             { name: "id", type: "STRING" },
@@ -82,6 +84,7 @@ export * from "./schema";
 export * from "./types";
 export * from "./utils";
 export * from "./watch";
+export * from "./react_hooks";
 
 ```
 

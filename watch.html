@@ -62,12 +62,12 @@
   <span class="hljs-keyword">const</span> tableDef = getTableDefinition(store, query[<span class="hljs-number">1</span>]);
   <span class="hljs-keyword">const</span> interestingTables = getRelatedTables(store, query, tableDef);
   <span class="hljs-keyword">const</span> shradCusor = defWatchableCursor(store.db, getShradCursorPath(store.db));
-  shradCusor.addWatch(wid, <span class="hljs-function">(<span class="hljs-params">id, commit</span>) =&gt;</span> {
+
+  shradCusor.addWatch(wid, <span class="hljs-function">(<span class="hljs-params">commit</span>) =&gt;</span> {
     <span class="hljs-keyword">const</span> dirtyTables = getDirtyTables(store, commit || []);
     <span class="hljs-keyword">const</span> isDirty = dirtyTables.some(<span class="hljs-function">(<span class="hljs-params">el</span>) =&gt;</span> interestingTables.has(el));
-    <span class="hljs-built_in">console</span>.debug(<span class="hljs-string">&quot;interestingTables&quot;</span>, interestingTables, dirtyTables, isDirty);
+
     <span class="hljs-keyword">if</span> (isDirty) {
-      <span class="hljs-built_in">console</span>.debug(dirtyTables, interestingTables, isDirty);
       handler();
     }
   });

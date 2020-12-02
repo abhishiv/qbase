@@ -46,7 +46,8 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-2">&#x00a7;</a>
               </div>
-              <p>Simple light and super-performant active record like ORM for browser with MongoDB styled queries and watchable queries.</p>
+              <p>Simple light and super-fast data store for browser with support for denormalization, MongoDB styled querying and watchable queries.</p>
+<p>Written to be an lightweight functional alternative to @apollo/client. PRs welcomed for adding support for JSONSchema</p>
 <h2 id="install-and-use">Install and use</h2>
 
             </div>
@@ -84,16 +85,16 @@
       <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Masters&quot;</span>,
       <span class="hljs-attr">primaryKey</span>: [<span class="hljs-string">&quot;id&quot;</span>],
       <span class="hljs-attr">relations</span>: [
-        [
-          R.MTM, <span class="hljs-comment">// relation type</span>
-          <span class="hljs-string">&quot;viewports&quot;</span>, <span class="hljs-comment">// relation name</span>
-          { <span class="hljs-comment">// relation options</span>
+        {
+          <span class="hljs-attr">type</span>: R.MTM,
+          <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;viewports&quot;</span>,
+          <span class="hljs-attr">opts</span>: {
             <span class="hljs-attr">tableName</span>: <span class="hljs-string">&quot;Viewports&quot;</span>,
             <span class="hljs-attr">remoteKey</span>: <span class="hljs-string">&quot;viewportId&quot;</span>,
             <span class="hljs-attr">localKey</span>: <span class="hljs-string">&quot;masterId&quot;</span>,
             <span class="hljs-attr">through</span>: <span class="hljs-string">&quot;MasterViewportJunction&quot;</span>,
           },
-        ],
+        },
       ],
       <span class="hljs-attr">columns</span>: [
         { <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;STRING&quot;</span> },
@@ -145,7 +146,8 @@
 <span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./schema&quot;</span>;
 <span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./types&quot;</span>;
 <span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./utils&quot;</span>;
-<span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./watch&quot;</span>;</pre></div></div>
+<span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./watch&quot;</span>;
+<span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./react_hooks&quot;</span>;</pre></div></div>
             
         </li>
         

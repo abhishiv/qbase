@@ -29,7 +29,7 @@ export function getRelatedTables(
 ) {
   return new Set<string>([
     query[1],
-    ...(query[2].includes || []).reduce<string[]>(
+    ...((query[2] || {}).includes || []).reduce<string[]>(
       (state: string[], includeName: string) => {
         const relation = getRelationDefintion(store, tableDef, includeName);
         if (relation.type === R.MTM) {

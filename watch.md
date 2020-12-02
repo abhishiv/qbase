@@ -22,12 +22,12 @@ export function observe(store: IQBase, query: ISelectQuery, handler: Function) {
   const tableDef = getTableDefinition(store, query[1]);
   const interestingTables = getRelatedTables(store, query, tableDef);
   const shradCusor = defWatchableCursor(store.db, getShradCursorPath(store.db));
-  shradCusor.addWatch(wid, (id, commit) => {
+
+  shradCusor.addWatch(wid, (commit) => {
     const dirtyTables = getDirtyTables(store, commit || []);
     const isDirty = dirtyTables.some((el) => interestingTables.has(el));
-    console.debug("interestingTables", interestingTables, dirtyTables, isDirty);
+
     if (isDirty) {
-      console.debug(dirtyTables, interestingTables, isDirty);
       handler();
     }
   });
