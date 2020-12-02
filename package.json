@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com/gratico/qbase.git"
+    "url": "ssh://git@github.com/abhishiv/qbase.git"
   },
   "url": "https://www.grati.co/@gratico/qbase",
   "accessConfig": {
@@ -27,7 +27,7 @@
     "build": "cp ../../tools/mono/Makefile ./Makefile && make build"
   },
   "dependencies": {
-    "@gratico/atom": "^0.1.1",
+    "@gratico/atom": "^0.1.2",
     "@gratico/checksum": "*",
     "shortid": "^2.2.15",
     "sift": "^13.1.10"
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@gratico/docs-site": "^0.1.2",
     "@types/jest": "^26.0.0",
-    "@types/shortid": "^0.0.29",
+    "@types/shortid": "0.0.29",
     "docco-next": "^0.9.3",
     "jest": "^26.0.1",
     "typedoc": "^0.19.2",

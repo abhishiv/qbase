@@ -279,10 +279,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@gratico/atom@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/@gratico/atom/-/atom-0.1.1.tgz#10e56ccbbe1d0062f85e6b266248677f7d35297c"
-  integrity sha512-i9UHcmfv9jWLIBRONt7YJedPMLQDy7p+plYHwFmCZr9XaN0E27mArLkvHGDxnYGh9SRdLgpAeuNewvSg5QjcbA==
+"@gratico/atom@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/@gratico/atom/-/atom-0.1.2.tgz#30f37542bafb1727824bd0ba66e2969f2b8dd9f4"
+  integrity sha512-WUuS6nslvfCsA3/xYehATbfiX32ofT9ppanpCEwBxWBBoKwbRNt/TMnW8FLGT63gPbH94HOt9ToRtrjzYLnHag==
 
 "@gratico/checksum@*":
   version "0.777.9"
@@ -579,7 +579,7 @@
   resolved "https://registry.npmjs.org/@types/prettier/-/prettier-2.1.5.tgz#b6ab3bba29e16b821d84e09ecfaded462b816b00"
   integrity sha512-UEyp8LwZ4Dg30kVU2Q3amHHyTn1jEdhCIE59ANed76GaT1Vp76DD3ZWSAxgCrw6wJ0TqeoBpqmfUHiUDPs//HQ==
 
-"@types/shortid@^0.0.29":
+"@types/shortid@0.0.29":
   version "0.0.29"
   resolved "https://registry.npmjs.org/@types/shortid/-/shortid-0.0.29.tgz#8093ee0416a6e2bf2aa6338109114b3fbffa0e9b"
   integrity sha1-gJPuBBam4r8qpjOBCRFLP7/6Dps=
@@ -2649,11 +2649,6 @@ normalize-path@^3.0.0:
   resolved "https://registry.npmjs.org/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
-normalizr@^3.6.1:
-  version "3.6.1"
-  resolved "https://registry.npmjs.org/normalizr/-/normalizr-3.6.1.tgz#d367ab840e031ff382141b8d81ce279292ff69fe"
-  integrity sha512-8iEmqXmPtll8PwbEFrbPoDxVw7MKnNvt3PZzR2Xvq9nggEEOgBlNICPXYzyZ4w4AkHUzCU998mdatER3n2VaMA==
-
 npm-run-path@^2.0.0:
   version "2.0.2"
   resolved "https://registry.npmjs.org/npm-run-path/-/npm-run-path-2.0.2.tgz#35a9232dfa35d7067b4cb2ddf2357b1871536c5f"
@@ -3537,10 +3532,10 @@ typedoc@^0.19.2:
     shelljs "^0.8.4"
     typedoc-default-themes "^0.11.4"
 
-typescript@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.1.2.tgz#6369ef22516fe5e10304aae5a5c4862db55380e9"
-  integrity sha512-thGloWsGH3SOxv1SoY7QojKi0tc+8FnOmiarEGMbd/lar7QOEd3hvlx3Fp5y6FlDUGl9L+pd4n2e+oToGMmhRQ==
+typescript@^3.9.5:
+  version "3.9.7"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-3.9.7.tgz#98d600a5ebdc38f40cb277522f12dc800e9e25fa"
+  integrity sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==
 
 uglify-js@^3.1.4:
   version "3.12.0"

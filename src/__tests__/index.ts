@@ -59,17 +59,9 @@ describe("QBase", () => {
 
   test("insert/select Query", async () => {
     const db = createStore(schema);
-    const selectQuery = getSelect(db, [
-      Q.SELECT,
-      "Viewports",
-      { columns: ["id"] },
-    ]);
+    const selectQuery = getSelect(db, "Viewports", { columns: ["id"] });
     const preInsertSelectResults = selectQuery();
-    const insertQuery = getInsert(db, [
-      Q.INSERT,
-      "Viewports",
-      [{ id: "viewport1" }],
-    ]);
+    const insertQuery = getInsert(db, "Viewports", [{ id: "viewport1" }]);
     insertQuery();
     const postInsertSelectResults = selectQuery();
     expect(preInsertSelectResults.length).toBe(0);
@@ -78,32 +70,19 @@ describe("QBase", () => {
 
   test("relationships MTM Query", async () => {
     const db = createStore(schema);
-    const selectQuery = getSelect(db, [
-      Q.SELECT,
-      "Viewports",
-      { columns: ["id"], includes: ["masters"] },
-    ]);
+    const selectQuery = getSelect(db, "Viewports", {
+      columns: ["id"],
+      includes: ["masters"],
+    });
     const preInsertSelectResults = selectQuery();
-    const insertMQuery = getInsert(db, [
-      Q.INSERT,
-      "Masters",
-      [{ id: "master1" }],
-    ]);
-    const insertVQuery = getInsert(db, [
-      Q.INSERT,
-      "Viewports",
-      [{ id: "viewport1" }],
-    ]);
-    const insertMVJunctionQuery = getInsert(db, [
-      Q.INSERT,
-      "MasterViewportJunction",
-      [
-        {
-          id: "master1.viewport1",
-          masterId: "master1",
-          viewportId: "viewport1",
-        },
-      ],
+    const insertMQuery = getInsert(db, "Masters", [{ id: "master1" }]);
+    const insertVQuery = getInsert(db, "Viewports", [{ id: "viewport1" }]);
+    const insertMVJunctionQuery = getInsert(db, "MasterViewportJunction", [
+      {
+        id: "master1.viewport1",
+        masterId: "master1",
+        viewportId: "viewport1",
+      },
     ]);
     insertMQuery();
     insertVQuery();

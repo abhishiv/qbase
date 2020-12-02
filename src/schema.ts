@@ -25,8 +25,6 @@ export function createStore(schema: ISchemaDefinition): IQBase {
     compiledSchema,
     queryHandlers,
     queries,
-    observe: (query: ISelectQuery, handler: Function) =>
-      observe(store, query, handler),
     schema,
   };
   schema.tables.forEach((table) => {

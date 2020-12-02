@@ -4,7 +4,6 @@ export interface IQBase {
   compiledSchema: Record<string, any>;
   queryHandlers: Map<string, Set<Function>>;
   queries: Map<string, [ISelectQuery, string, string]>;
-  observe: Function;
   schema: ISchemaDefinition;
 }
 
@@ -108,7 +107,7 @@ export interface ISelectCriterion {
   limit?: number; // NIMP
   skip?: number; // NIMP
 }
-export type ISelectQuery = [Q.SELECT, string, ISelectCriterion];
+export type ISelectQuery = [Q.SELECT, string, ISelectCriterion?];
 export type IInsertQuery = [Q.INSERT, string, any[]];
 
 export interface IUpdateCiterion {
