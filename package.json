@@ -2,7 +2,7 @@
   "name": "@gratico/qbase",
   "version": "0.8.3",
   "author": "Abhishiv Saxena<abhishiv@gmail.com>",
-  "description": "Superperformant in-memory data store with support for MTM/HM/BT/H1 relationships and relay/apollo like query watching - written to be an functional alternative to @apollo/client. PRs welcomed for adding support for JSONSchema.",
+  "description": "Simple light and super-fast data store for browser with support for denormalization, MongoDB styled querying and watchable queries. Written to be an lightweight functional alternative to @apollo/client. PRs welcomed for adding support for JSONSchema.",
   "license": "UNLICENSED",
   "keywords": [
     "gratico-engineering"
@@ -32,13 +32,17 @@
     "shortid": "^2.2.15",
     "sift": "^13.1.10"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "react": "^17.0.1"
+  },
   "devDependencies": {
     "@gratico/docs-site": "^0.1.2",
     "@types/jest": "^26.0.0",
+    "@types/react": "^17.0.0",
     "@types/shortid": "0.0.29",
     "docco-next": "^0.9.3",
     "jest": "^26.0.1",
+    "prettier": "^2.2.1",
     "typedoc": "^0.19.2",
     "typescript": "^4.1.2"
   }

@@ -23,7 +23,7 @@
     "skipLibCheck": true,
     "typeRoots": ["./node_modules/@types", "./src/@types"]
   },
-  "exclude": ["dist"],
+  "exclude": ["dist", "docs"],
   "watchOptions": {
     "watchFile": "useFsEvents",
     "watchDirectory": "useFsEvents",
