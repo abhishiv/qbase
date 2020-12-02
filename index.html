@@ -46,8 +46,8 @@
               <div class="sswrap ">
                 <a class="ss" href="#section-2">&#x00a7;</a>
               </div>
-              <p>Simple light and super-fast data store for browser with support for denormalization, MongoDB styled querying and watchable queries.</p>
-<p>Written to be an lightweight functional alternative to @apollo/client. PRs welcomed for adding support for JSONSchema</p>
+              <p>Simple lightweight and fast in-memory data store with support for lazy queries, watchable queries, transactions, H1/HM/MTM/BT relationships, and MongoDB styled selectors.</p>
+<p>Written to be an lightweight functional alternative to @apollo/client. PRs welcomed for adding support for JSONSchema.</p>
 <h2 id="install-and-use">Install and use</h2>
 
             </div>
@@ -63,7 +63,8 @@
               </div>
               <p>To use run <code>npm install -g @gratico/qbase</code></p>
 <pre><code><span class="hljs-keyword">import</span> {createStore, getSelect, getInsert, observe} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/qbase&quot;</span>
-<span class="hljs-keyword">const</span> store = createStore()</code></pre>
+<span class="hljs-keyword">import</span> schema <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./schema&#x27;</span>
+<span class="hljs-keyword">const</span> store = createStore(schema)</code></pre>
 <h2 id="schema-definition">Schema Definition</h2>
 
             </div>
@@ -81,6 +82,7 @@
 <pre><code><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> schema: ISchemaDefinition = {
   <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Kernel&quot;</span>,
   <span class="hljs-attr">tables</span>: [
+    ...tables,
     {
       <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Masters&quot;</span>,
       <span class="hljs-attr">primaryKey</span>: [<span class="hljs-string">&quot;id&quot;</span>],
@@ -119,25 +121,15 @@
               <p>List of table describing their column and realtions</p>
 <pre><code><span class="hljs-keyword">const</span> selectQuery = getSelect(db, [
   Q.SELECT,
-  <span class="hljs-string">&quot;Viewports&quot;</span>,
+  <span class="hljs-string">&quot;Masters&quot;</span>,
   { <span class="hljs-attr">columns</span>: [<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>], <span class="hljs-attr">includes</span>: [<span class="hljs-string">&quot;masters&quot;</span>] },
 ]);
 <span class="hljs-keyword">const</span> preInsertSelectResults = selectQuery();
 <span class="hljs-keyword">const</span> insertMQuery = getInsert(db, [
   Q.INSERT,
-  <span class="hljs-string">&quot;Masters&quot;</span>,
-  [{ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;master1&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Master Node&quot;</span> }],
-]);
-<span class="hljs-keyword">const</span> insertVQuery = getInsert(db, [
-  Q.INSERT,
-  <span class="hljs-string">&quot;Viewports&quot;</span>,
-  [{ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;viewport1&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;viepwortNode&quot;</span> }],
-]);
-<span class="hljs-keyword">const</span> insertMVJunctionQuery = getInsert(db, [
-  Q.INSERT,
-  <span class="hljs-string">&quot;MasterViewportJunction&quot;</span>,
-  [{ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;master1.viewport1&quot;</span>, <span class="hljs-attr">masterId</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-attr">viewportId</span>: <span class="hljs-string">&quot;viewport1&quot;</span> }],
-]);</code></pre>
+  <span class="hljs-string">&quot;People&quot;</span>,
+  [{ <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;m1&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Master 1&quot;</span> }],
+])();</code></pre>
 
             </div>
             

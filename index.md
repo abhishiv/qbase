@@ -4,9 +4,9 @@
 @gratico/qbase
 =====
 
-Simple light and super-fast data store for browser with support for denormalization, MongoDB styled querying and watchable queries.
+Simple lightweight and fast in-memory data store with support for lazy queries, watchable queries, transactions, H1/HM/MTM/BT relationships, and MongoDB styled selectors.
 
-Written to be an lightweight functional alternative to @apollo/client. PRs welcomed for adding support for JSONSchema
+Written to be an lightweight functional alternative to @apollo/client. PRs welcomed for adding support for JSONSchema.
 
 Install and use
 ---------------
@@ -14,7 +14,8 @@ Install and use
 To use run `npm install -g @gratico/qbase`
 
     import {createStore, getSelect, getInsert, observe} from "@gratico/qbase"
-    const store = createStore()
+    import schema from './schema'
+    const store = createStore(schema)
 
 
 Schema Definition
@@ -25,6 +26,7 @@ List of table describing their column and realtions
     export const schema: ISchemaDefinition = {
       name: "Kernel",
       tables: [
+        ...tables,
         {
           name: "Masters",
           primaryKey: ["id"],
@@ -48,6 +50,7 @@ List of table describing their column and realtions
       ],
     };
 
+
 Querying
 ---------------------------
 
@@ -55,25 +58,15 @@ List of table describing their column and realtions
 
     const selectQuery = getSelect(db, [
       Q.SELECT,
-      "Viewports",
+      "Masters",
       { columns: ["id", "name"], includes: ["masters"] },
     ]);
     const preInsertSelectResults = selectQuery();
     const insertMQuery = getInsert(db, [
       Q.INSERT,
-      "Masters",
-      [{ id: "master1", "name": "Master Node" }],
-    ]);
-    const insertVQuery = getInsert(db, [
-      Q.INSERT,
-      "Viewports",
-      [{ id: "viewport1", "name": "viepwortNode" }],
-    ]);
-    const insertMVJunctionQuery = getInsert(db, [
-      Q.INSERT,
-      "MasterViewportJunction",
-      [{ id: "master1.viewport1", masterId: "", viewportId: "viewport1" }],
-    ]);
+      "People",
+      [{ id: "m1", "name": "Master 1" }],
+    ])();
 
 
 
