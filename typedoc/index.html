@@ -388,40 +388,43 @@ footer {
 				<a href="#graticoqbase-1" id="graticoqbase-1" style="color: inherit; text-decoration: none;">
 					<h1>@gratico/qbase</h1>
 				</a>
-				<p>Simple active record like ORM for browser with MongoDB styled queries and watchable queries.</p>
+				<p>Simple lightweight and fast in-memory data store with support for lazy queries, watchable queries, transactions, H1/HM/MTM/BT relationships, and MongoDB styled selectors.</p>
+				<p>Written to be an lightweight functional alternative to @apollo/client. PRs welcomed for adding support for JSONSchema.</p>
 				<a href="#install-and-use" id="install-and-use" style="color: inherit; text-decoration: none;">
 					<h2>Install and use</h2>
 				</a>
 				<p>To use run <code>npm install -g @gratico/qbase</code></p>
-				<pre><code><span class="hljs-keyword">import</span> {createStore, getSelect, getInsert, observe} <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@gratico/qbase&quot;</span>
-<span class="hljs-keyword">const</span> store = createStore()</code></pre>
+				<pre><code><span class="hljs-keyword">import</span> {createStore, getSelect, getInsert, observe} <span class="hljs-keyword">from</span> &quot;@gratico/qbase&quot;
+<span class="hljs-keyword">import</span> <span class="hljs-keyword">schema</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./schema&#x27;</span>
+const store = createStore(<span class="hljs-keyword">schema</span>)</code></pre>
 				<a href="#schema-definition" id="schema-definition" style="color: inherit; text-decoration: none;">
 					<h2>Schema Definition</h2>
 				</a>
 				<p>List of table describing their column and realtions</p>
-				<pre><code>export const <span class="hljs-keyword">schema</span>: ISchemaDefinition = {
-  <span class="hljs-type">name</span>: &quot;Kernel&quot;,
-  <span class="hljs-keyword">tables</span>: [
+				<pre><code>export const schema: ISchemaDefinition = {
+<span class="hljs-symbol">  name:</span> <span class="hljs-string">&quot;Kernel&quot;</span>,
+<span class="hljs-symbol">  tables:</span> [
+    ...tables,
     {
-      <span class="hljs-type">name</span>: &quot;Masters&quot;,
-      primaryKey: [&quot;id&quot;],
-      relations: [
-        [
-          R.MTM, // relation <span class="hljs-keyword">type</span>
-          &quot;viewports&quot;, // relation <span class="hljs-type">name</span>
-          { // relation <span class="hljs-keyword">options</span>
-            tableName: &quot;Viewports&quot;,
-            remoteKey: &quot;viewportId&quot;,
-            localKey: &quot;masterId&quot;,
-            through: &quot;MasterViewportJunction&quot;,
+<span class="hljs-symbol">      name:</span> <span class="hljs-string">&quot;Masters&quot;</span>,
+<span class="hljs-symbol">      primaryKey:</span> [<span class="hljs-string">&quot;id&quot;</span>],
+<span class="hljs-symbol">      relations:</span> [
+        {
+<span class="hljs-symbol">          type:</span> R.MTM,
+<span class="hljs-symbol">          name:</span> <span class="hljs-string">&quot;viewports&quot;</span>,
+<span class="hljs-symbol">          opts:</span> {
+<span class="hljs-symbol">            tableName:</span> <span class="hljs-string">&quot;Viewports&quot;</span>,
+<span class="hljs-symbol">            remoteKey:</span> <span class="hljs-string">&quot;viewportId&quot;</span>,
+<span class="hljs-symbol">            localKey:</span> <span class="hljs-string">&quot;masterId&quot;</span>,
+<span class="hljs-symbol">            through:</span> <span class="hljs-string">&quot;MasterViewportJunction&quot;</span>,
           },
-        ],
+        },
       ],
-      <span class="hljs-keyword">columns</span>: [
-        { <span class="hljs-type">name</span>: &quot;id&quot;, <span class="hljs-keyword">type</span>: &quot;STRING&quot; },
-        { <span class="hljs-type">name</span>: &quot;createdAt&quot;, <span class="hljs-keyword">type</span>: &quot;DATE_TIME&quot;, nullable: <span class="hljs-keyword">true</span> },
+<span class="hljs-symbol">      columns:</span> [
+        { name: <span class="hljs-string">&quot;id&quot;</span>, type: <span class="hljs-string">&quot;STRING&quot;</span> },
+        { name: <span class="hljs-string">&quot;createdAt&quot;</span>, type: <span class="hljs-string">&quot;DATE_TIME&quot;</span>, nullable: true },
       ],
-    } <span class="hljs-keyword">as</span> ITableDefinition,
+    } as ITableDefinition,
   ],
 };</code></pre>
 				<a href="#querying" id="querying" style="color: inherit; text-decoration: none;">
@@ -430,31 +433,22 @@ footer {
 				<p>List of table describing their column and realtions</p>
 				<pre><code>const selectQuery = getSelect(db, [
   <span class="hljs-symbol">Q</span>.<span class="hljs-symbol">SELECT</span>,
-  <span class="hljs-string">&quot;Viewports&quot;</span>,
+  <span class="hljs-string">&quot;Masters&quot;</span>,
   { columns: [<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>], includes: [<span class="hljs-string">&quot;masters&quot;</span>] },
 ]);
 const preInsertSelectResults = selectQuery();
 const insertMQuery = getInsert(db, [
   <span class="hljs-symbol">Q</span>.<span class="hljs-symbol">INSERT</span>,
-  <span class="hljs-string">&quot;Masters&quot;</span>,
-  [{ id: <span class="hljs-string">&quot;master1&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Master Node&quot;</span> }],
-]);
-const insertVQuery = getInsert(db, [
-  <span class="hljs-symbol">Q</span>.<span class="hljs-symbol">INSERT</span>,
-  <span class="hljs-string">&quot;Viewports&quot;</span>,
-  [{ id: <span class="hljs-string">&quot;viewport1&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;viepwortNode&quot;</span> }],
-]);
-const insertMVJunctionQuery = getInsert(db, [
-  <span class="hljs-symbol">Q</span>.<span class="hljs-symbol">INSERT</span>,
-  <span class="hljs-string">&quot;MasterViewportJunction&quot;</span>,
-  [{ id: <span class="hljs-string">&quot;master1.viewport1&quot;</span>, masterId: <span class="hljs-string">&quot;&quot;</span>, viewportId: <span class="hljs-string">&quot;viewport1&quot;</span> }],
-]);</code></pre>
+  <span class="hljs-string">&quot;People&quot;</span>,
+  [{ id: <span class="hljs-string">&quot;m1&quot;</span>, <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Master 1&quot;</span> }],
+])();</code></pre>
 				<pre><code><span class="hljs-builtin-name">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./queries&quot;</span>;
 <span class="hljs-builtin-name">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./relational&quot;</span>;
 <span class="hljs-builtin-name">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./schema&quot;</span>;
 <span class="hljs-builtin-name">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./types&quot;</span>;
 <span class="hljs-builtin-name">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./utils&quot;</span>;
 <span class="hljs-builtin-name">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./watch&quot;</span>;
+<span class="hljs-builtin-name">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./react_hooks&quot;</span>;
 </code></pre>
 			</div>
 		</div>
